@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "jest": "^18.1.0",
+    "jest-cli": "^18.1.0",
     "react-scripts": "0.9.0"
   },
   "dependencies": {
@@ -12,7 +14,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
