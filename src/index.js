@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App';
-import ImageUpload from './ImageUpload';
+import App from './js/App';
+import ImageUpload from './js/ImageUpload';
 
-import './index.css';
+import './css/index.css';
 
 ReactDOM.render(
   <App />,
