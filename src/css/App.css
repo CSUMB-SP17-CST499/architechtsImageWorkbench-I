@@ -3,15 +3,15 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  /*animation: App-logo-spin infinite 20s linear;*/
   height: 80px;
 }
 
 .App-header {
-  background-color: #ffffff;
+  background-color: SteelBlue;
   height: 150px;
   padding: 20px;
-  color: black;
+  color: white;
 }
 
 .App-intro {

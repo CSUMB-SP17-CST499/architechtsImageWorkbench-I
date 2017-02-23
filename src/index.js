@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import ImageUpload from './ImageUpload';
 
-import './index.css';
+import '../css/index.css';
 
 ReactDOM.render(
   <App />,
