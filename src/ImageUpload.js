@@ -41,7 +41,7 @@ class ImageUpload extends Component {
       <div className='previewComponent'>
         <form onSubmit={(e)=>this.handleSubmit(e)}>
           <input className='fileInput' type='file' onChange={(e)=>this.handleImageChange(e)} />
-          <button className='submitButton' type='submit' onClick={(e)=>this.handleSubmit(e)}>Upload Image</button>
+          <button id="upload" className='submitButton' type='submit' onClick={(e)=>this.handleSubmit(e)}>Upload Image</button>
         </form>
         <div className='imgPreview'>
           {$imagePreview}
