@@ -34,7 +34,7 @@ class ImageUpload extends Component {
   render() {
     let {imagePreviewUrl} = this.state;
     let $imagePreview = imagePreviewUrl ?
-      (<img src={imagePreviewUrl} />) :
+      (<img className="imgUrl" src={imagePreviewUrl} />) :
         (<div className='previewText'>Please select an image for preview</div>);
 
     return (
