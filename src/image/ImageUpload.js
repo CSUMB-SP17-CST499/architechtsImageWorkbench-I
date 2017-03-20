@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import '../css/ImageUpload.css'
+
+import './imageUpload.css';
 
 class ImageUpload extends Component {
   constructor(props) {
@@ -34,8 +35,8 @@ class ImageUpload extends Component {
   render() {
     let {imagePreviewUrl} = this.state;
     let $imagePreview = imagePreviewUrl ?
-      (<img className="imgUrl" src={imagePreviewUrl} />) :
-        (<div className='previewText'>Please select an image for preview</div>);
+      (<img className="imgUrl" alt="imgUrl" src={imagePreviewUrl} />) :
+        'Please select an image for preview';
 
     return (
       <div className='previewComponent'>

@@ -16,5 +16,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#credentials
+#AWS credentials
 src/json/
+json/credentials.json

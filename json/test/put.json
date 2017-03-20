@@ -1,0 +1,7 @@
+{
+  "TableName": "test",
+  "Item": {
+    "uuid": "dc498c48-0951-46e7-9e31-d162feeda9b7",
+    "message": "This is also a test record."
+  }
+}

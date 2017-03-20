@@ -1,0 +1,12 @@
+{
+  "TableName": "test",
+  "Key": {
+    "uuid": "3c9714db-ef66-431e-b309-df73317e2a45"
+  },
+  "AttributeUpdates": {
+    "message": {
+      "Action": "PUT",
+      "Value": "This is an updated record."
+    }
+  }
+}

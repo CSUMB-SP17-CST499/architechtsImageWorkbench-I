@@ -1,0 +1,45 @@
+{
+  "dels": [
+    {
+      "TableName": "test",
+      "Key": {
+        "uuid": "3d808379-41b3-44fd-8166-3d2aacf51e52"
+      }
+    },
+    {
+      "TableName": "test",
+      "Key": {
+        "uuid": "dc498c48-0951-46e7-9e31-d162feeda9b7"
+      }
+    },
+    {
+      "TableName": "test",
+      "Key": {
+        "uuid": "3c9714db-ef66-431e-b309-df73317e2a45"
+      }
+    }
+  ],
+  "puts": [
+    {
+      "TableName": "test",
+      "Item": {
+        "uuid": "3d808379-41b3-44fd-8166-3d2aacf51e52",
+        "message": "This is a test record."
+      }
+    },
+    {
+      "TableName": "test",
+      "Item": {
+        "uuid": "96f43493-9820-4e33-a235-855a65cb3f8e",
+        "message": "This record will be deleted."
+      }
+    },
+    {
+      "TableName": "test",
+      "Item": {
+        "uuid": "3c9714db-ef66-431e-b309-df73317e2a45",
+        "message": "This record will be updated."
+      }
+    }
+  ]
+}
