@@ -1,17 +1,17 @@
 var AWS = require('aws-sdk');
 var fs = require('fs')
 var options = {
-    partSize: 10 * 1024 * 1024, 
+    partSize: 10 * 1024 * 1024,
     queueSize: 1
 };
 
 var s3 = new AWS.S3();
-var s3Bucket = new AWS.S3( 
-    { 
-        params: 
+var s3Bucket = new AWS.S3(
+    {
+        params:
             {
                 Bucket: 'testing-uswest2'
-            } 
+            }
     }
 );
 

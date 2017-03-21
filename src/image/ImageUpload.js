@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+var AWS = require('aws-sdk');
 import './imageUpload.css';
 
 class ImageUpload extends Component {
@@ -29,7 +29,36 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('handle uploading-', this.state.file);
+    var access = process.env.AWS_ACCESS_KEY_ID;
+    var secret = process.env.AWS_SECRET_ACCESS_KEY;
+
+    if (access == null || secret == null) {
+      AWS.config.loadFromPath('../../json/credentials.json');
+    } else{
+      AWS.config.update({
+        accessKeyId: access,
+        secretAccessKey: secret,
+        "region": "us-west-1"
+      });
+    }
+
+    const s3image = new AWS.S3();
+
+    var params = {
+        Key: this.state.file.name,
+        Body: this.state.file,
+        Bucket: "storeimage.ag",
+        ACL: 'public-read'
+    };
+
+    var options = {
+        partSize: 10 * 1024 * 1024,
+        queueSize: 1
+    };
+
+    s3image.upload(params, options, function(err, data) {
+        console.log(err, data);
+    });
   }
 
   render() {
