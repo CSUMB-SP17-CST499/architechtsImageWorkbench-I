@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
+
+import './Imageupload.css';
+
 var AWS = require('aws-sdk');
-import './imageUpload.css';
+
+var config = require('../aws/aws-config');
 
 class ImageUpload extends Component {
   constructor(props) {
     super(props);
     this.state = {imagePreviewUrl: ''}
+
+    AWS.config = config.config;
+    this.s3image = new AWS.S3();
 
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,20 +36,6 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var access = process.env.AWS_ACCESS_KEY_ID;
-    var secret = process.env.AWS_SECRET_ACCESS_KEY;
-
-    if (access == null || secret == null) {
-      AWS.config.loadFromPath('../../json/credentials.json');
-    } else{
-      AWS.config.update({
-        accessKeyId: access,
-        secretAccessKey: secret,
-        "region": "us-west-1"
-      });
-    }
-
-    const s3image = new AWS.S3();
 
     var params = {
         Key: this.state.file.name,
@@ -56,7 +49,7 @@ class ImageUpload extends Component {
         queueSize: 1
     };
 
-    s3image.upload(params, options, function(err, data) {
+    this.s3image.upload(params, options, function(err, data) {
         console.log(err, data);
     });
   }
@@ -69,7 +62,6 @@ class ImageUpload extends Component {
 
     return (
       <div className='previewComponent'>
-
         <form onSubmit={this.handleSubmit}>
           <input className='fileInput' type='file' onChange={this.handleImageChange} />
           <button className='submitButton' type='submit' onClick={this.handleSubmit}>Upload Image</button>

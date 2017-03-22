@@ -1,48 +1,31 @@
-import DBController from './DBController';
+var AWS = require('aws-sdk');
+
+var config = require('./aws-config');
+var dbc = require('./dbcontroller');
 
 /*
-    Tests for the DBController class. "test" table is cleared and repopulated
+    Tests for the DBController module. "test" table is cleared and repopulated
     each time the tests are run.
 */
 
 describe('DBController test suite', () => {
 
-  let dbc;
   let params;
 
   beforeAll(() => {
-    dbc = new DBController();
+    AWS.config = config.config;
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    const dels = require('../../json/pre/dels.json');
+    const puts = require('../../json/pre/puts.json');
 
-    var init = require('../../json/pre/init.json');
-
-    var del = function() {
-      return new Promise((fulfill, reject) => {
-        var lock1 = init.dels.length;
-        init.dels.forEach((del) => {
-          dbc.docClient.delete(del, (err, data) => {
-            if (err) reject();
-            lock1--;
-            if (lock1 == 0) fulfill();
-          });
+    return new Promise((fulfill, reject) => {
+      docClient.batchWrite(dels, (err, data) => {
+        if (err) reject();
+        docClient.batchWrite(puts, (err, data) => {
+          if (err) reject();
+          fulfill();
         });
       });
-    };
-
-    var put = function() {
-      return new Promise((fulfill, reject) => {
-        var lock2 = init.puts.length;
-        init.puts.forEach((put) => {
-          dbc.docClient.put(put, (err, data) => {
-            if (err) reject();
-            lock2--;
-            if (lock2 == 0) fulfill();
-          });
-        });
-      });
-    };
-
-    return del().then(() => {
-      return put();
     });
   });
 
@@ -77,23 +60,23 @@ describe('DBController test suite', () => {
   test('DBController puts a record into "test" table', done => {
     params = require('../../json/test/put.json');
 
-    var get_params = {
+    var getParams = {
       TableName: "test",
       Key: {
         uuid: "dc498c48-0951-46e7-9e31-d162feeda9b7"
       }
     };
-    expect(get_params.Key.uuid).toBe(params.Item.uuid);
+    expect(getParams.Key.uuid).toBe(params.Item.uuid);
 
-    dbc.get(get_params, (err, data) => {
+    dbc.get(getParams, (err, data) => {
       expect(data).toEqual({});
 
       dbc.put(params, (err, data) => {
         expect(err).toBeNull();
 
-        dbc.get(get_params, (err, data) => {
-          expect(data.Item.uuid).toBe('dc498c48-0951-46e7-9e31-d162feeda9b7');
-          expect(data.Item.message).toBe('This is also a test record.');
+        dbc.get(getParams, (err, data) => {
+          expect(data.Item.uuid).toBe(params.Item.uuid);
+          expect(data.Item.message).toBe(params.Item.message);
           done();
         });
       });
@@ -102,24 +85,25 @@ describe('DBController test suite', () => {
 
   test('DBController updates a record in "test" table', done => {
     params = require('../../json/test/upd.json');
-    var get_params = {
+    var getParams = {
       TableName: 'test',
       Key: {
         uuid: '3c9714db-ef66-431e-b309-df73317e2a45'
       }
     };
-    expect(get_params.Key.uuid).toBe(params.Key.uuid);
+    expect(getParams.Key.uuid).toBe(params.Key.uuid);
 
-    dbc.get(get_params, (err, data) => {
-      expect(data.Item.uuid).toBe('3c9714db-ef66-431e-b309-df73317e2a45');
+    dbc.get(getParams, (err, data) => {
+      expect(data.Item.uuid).toBe(params.Key.uuid);
       expect(data.Item.message).toBe('This record will be updated.');
 
       dbc.update(params, (err, data) => {
         expect(err).toBeNull();
 
-        dbc.get(get_params, (err, data) => {
-          expect(data.Item.uuid).toBe('3c9714db-ef66-431e-b309-df73317e2a45');
-          expect(data.Item.message).toBe('This is an updated record.');
+        dbc.get(getParams, (err, data) => {
+          expect(data.Item.uuid).toBe(params.Key.uuid);
+          expect(data.Item.message)
+            .toBe(params.AttributeUpdates.message.Value);
           done();
         });
       });
