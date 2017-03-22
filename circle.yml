@@ -1,0 +1,3 @@
+notify
+	webhooks:
+		- url: https://imagengine.phacility.com/harbormaster/hook/circleci/

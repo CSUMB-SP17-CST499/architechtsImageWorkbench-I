@@ -1,4 +1,6 @@
 var AWS = require('aws-sdk');
+
+var config = require('./AWSConfig.js');
 var ddbcb = require('./DynamoDBCallbacks.js');
 
 /*
@@ -12,6 +14,7 @@ var ddbcb = require('./DynamoDBCallbacks.js');
 */
 
 var DBController = function() {
+  /*
   var access = process.env.AWS_ACCESS_KEY_ID;
   var secret = process.env.AWS_SECRET_ACCESS_KEY;
 
@@ -23,6 +26,8 @@ var DBController = function() {
       region: 'us-west-1'
     });
   }
+  */
+  AWS.config = config.config;
 
   this.dynamodb = new AWS.DynamoDB();
   this.docClient = new AWS.DynamoDB.DocumentClient();
