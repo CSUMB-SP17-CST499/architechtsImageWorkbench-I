@@ -29,8 +29,8 @@ describe('<ImageUpload /> shallow rendering', () => {
     expect(imageUpload.state().file).toBe(undefined);
   });
 
-  test('ImageUpload has two children', () => {
-    expect(imageUpload.children().length).toBe(2);
+  test('ImageUpload has three children', () => {
+    expect(imageUpload.children().length).toBe(3);
   });
 
   test('ImageUpload has one div child', () => {
