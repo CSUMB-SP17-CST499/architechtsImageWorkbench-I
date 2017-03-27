@@ -75,4 +75,4 @@ class S3Gallery extends Component {
   }
 }
 
-export default s3Gallery;
+export default S3Gallery;

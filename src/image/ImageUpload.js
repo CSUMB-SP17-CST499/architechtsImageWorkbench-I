@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import React, { Component } from 'react';
 
-import S3Gallery from './imageSupport/s3Gallery';
+import S3Gallery from './imageSupport/S3Gallery';
 
 import './imageUpload.css';
 
@@ -81,7 +81,7 @@ class ImageUpload extends Component {
         <div className='imgPreview'>
           {$imagePreview}
         </div>
-        <S3Gallery/>
+        <S3Gallery />
       </div>
     );
   }
