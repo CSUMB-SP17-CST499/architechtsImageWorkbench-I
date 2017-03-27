@@ -7,11 +7,13 @@
   padding: 10px;
   margin: 10px;
   cursor: pointer;
+  margin-bottom:10px;
+
 }
 
 .imgPreview{
-  position: absolute;
-  left: 35%;
+  margin-right: auto;
+  margin-left: auto;
   padding: 5px;
   max-width:350px;
   max-height:450px;
@@ -21,12 +23,14 @@
   border-right: 2px solid lightgray;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
+  margin-bottom:20px;
 }
 
 .previewText {
   width: 100%;
   margin-top: 10px;
   text-align: center;
+  margin-bottom:20px;
 }
 
 .submitButton {
@@ -36,6 +40,7 @@
   font-weight: 500;
   font-size: 8pt;
   cursor: pointer;
+  margin-bottom:20px;
 }
 
 &:hover{
@@ -44,6 +49,7 @@
 
 .previewComponent {
   text-align: center;
+  margin-bottom:20px;
 }
 
 .imgUrl{
