@@ -67,7 +67,7 @@ class s3Gallery extends Component {
       lightboxImage: {
         src: url,
       },
-    }
+    };
     return IMAGES;
   }
 
