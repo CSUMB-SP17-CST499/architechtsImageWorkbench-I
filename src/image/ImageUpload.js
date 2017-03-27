@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 var AWS = require('aws-sdk');
 import './imageUpload.css';
+import Gallery from './imageSupport/s3Gallery'
+
 
 class ImageUpload extends Component {
   constructor(props) {
@@ -67,6 +69,7 @@ class ImageUpload extends Component {
       (<img className="imgUrl" alt="imgUrl" src={imagePreviewUrl} />) :
         'Please select an image for preview';
 
+
     return (
       <div className='previewComponent'>
 
@@ -74,12 +77,18 @@ class ImageUpload extends Component {
           <input className='fileInput' type='file' onChange={this.handleImageChange} />
           <button className='submitButton' type='submit' onClick={this.handleSubmit}>Upload Image</button>
         </form>
+
         <div className='imgPreview'>
           {$imagePreview}
         </div>
+        <div>
+            <Gallery/>
+        </div>
       </div>
+
     )
   }
 }
+
 
 export default ImageUpload;
