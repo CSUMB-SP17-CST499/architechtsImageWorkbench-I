@@ -19,7 +19,7 @@ class S3Gallery extends Component {
     const secret = process.env.AWS_SECRET_ACCESS_KEY;
     AWS.config.update({
       credentials: new AWS.Credentials(access, secret),
-      region: 'us-west-1'
+      region: 'us-west-1',
     });
 
     const s3 = new AWS.S3();
@@ -57,7 +57,7 @@ class S3Gallery extends Component {
     return images;
   }
 
-  showImages(src, width=600, height=600, aspectRatio=1.1) {
+  showImage(src, width=600, height=600, aspectRatio=1.1) {
     //ratio of images
     return ({
       src,

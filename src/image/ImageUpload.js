@@ -5,7 +5,6 @@ import S3Gallery from './imageSupport/S3Gallery';
 
 import './imageUpload.css';
 
-
 class ImageUpload extends Component {
   constructor(props) {
     super(props);
