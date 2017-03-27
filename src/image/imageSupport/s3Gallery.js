@@ -1,80 +1,77 @@
+import AWS from 'aws-sdk';
 import React, {Component} from 'react'
 import Gallery from 'react-photo-gallery';
-import '../imageUpload.css';
-var AWS = require('aws-sdk');
 
-class s3Gallery extends Component {
+import '../imageUpload.css';
+
+class S3Gallery extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      images: this.displayImages()
+      images: this.displayImages(),
     };
   }
 
   displayImages() {
     //array of images to display
-    var s3Images = [];
-    var access = process.env.AWS_ACCESS_KEY_ID;
-    var secret = process.env.AWS_SECRET_ACCESS_KEY;
+    const access = process.env.AWS_ACCESS_KEY_ID;
+    const secret = process.env.AWS_SECRET_ACCESS_KEY;
     AWS.config.update({
       credentials: new AWS.Credentials(access, secret),
       region: 'us-west-1'
     });
 
-    var s3 = new AWS.S3();
+    const s3 = new AWS.S3();
 
-    var params = {
+    const params = {
       Bucket: 'storeimage.ag',
       Delimiter: '/',
     };
 
+    const s3Images = [];
     s3.listObjects(params, function (err, data) {
       if(err)throw err;
-      var contents = data.Contents;
+      const contents = data.Contents;
 
-      contents.forEach(function (content) {
-        s3Images.push(content.Key);
-      });
+      contents.forEach(content => s3Images.push(content.Key));
     });
+
     console.log(s3Images); //debugging purposes
 
-    const imgPrefix = 'https://s3-us-west-1.amazonaws.com/storeimage.ag/';
     const imgNames = [
       "Cl7ua4oUgAEq59R.jpg",
       "IMG_2447.JPG",
       "fDwJgdR.jpg",
-      "rMk4w6S.jpg"
+      "rMk4w6S.jpg",
     ];
 
-    console.log(imgNames);//testing
-    const IMAGES = [];
+    console.log(imgNames); // testing
 
-    for (var i = 0; i < imgNames.length; i++) {
-      IMAGES.push(this.showImage(`${imgPrefix}${imgNames[i]}`, 600, 600, 1.1));
-    }
+    const imgPrefix = 'https://s3-us-west-1.amazonaws.com/storeimage.ag/';
+    const images = [];
+    imgNames.forEach((name) => {
+      images.push(this.showImage(`${imgPrefix}${name}`));
+    });
 
-    return IMAGES;
+    return images;
   }
 
-  showImage(url, img_width, img_height, ratio) {
+  showImages(src, width=600, height=600, aspectRatio=1.1) {
     //ratio of images
-    var IMAGES = {
-      src: url,
-      width: img_width,
-      height: img_height,
-      aspectRatio: ratio,
+    return ({
+      src,
+      width,
+      height,
+      aspectRatio,
       lightboxImage: {
-        src: url,
+        src,
       },
-    };
-    return IMAGES;
+    });
   }
 
   render() {
-    return (
-      <Gallery photos={this.state.images} />
-    )
+    return <Gallery photos={this.state.images} />;
   }
 }
 
