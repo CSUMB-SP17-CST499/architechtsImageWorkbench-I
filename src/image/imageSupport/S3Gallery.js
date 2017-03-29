@@ -19,36 +19,34 @@ class S3Gallery extends Component {
     const secret = process.env.AWS_SECRET_ACCESS_KEY;
     AWS.config.update({
       credentials: new AWS.Credentials(access, secret),
-      region: 'us-west-1',
+      region: 'us-west-2',
     });
 
     const s3 = new AWS.S3();
 
     const params = {
-      Bucket: 'storeimage.ag',
+      Bucket: 'testing-uswest2',
       Delimiter: '/',
     };
 
     const s3Images = [];
     s3.listObjects(params, function (err, data) {
       if(err)throw err;
-      const contents = data.Contents;
+      let contents = data.Contents;
 
       contents.forEach(content => s3Images.push(content.Key));
     });
-
     console.log(s3Images); //debugging purposes
 
     const imgNames = [
-      "Cl7ua4oUgAEq59R.jpg",
-      "IMG_2447.JPG",
-      "fDwJgdR.jpg",
-      "rMk4w6S.jpg",
+      "IwERLBl.jpg",
+      "testImage2.jpg",
+      "testImage5.jpg",
     ];
 
     console.log(imgNames); // testing
 
-    const imgPrefix = 'https://s3-us-west-1.amazonaws.com/storeimage.ag/';
+    const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
     const images = [];
     imgNames.forEach((name) => {
       images.push(this.showImage(`${imgPrefix}${name}`));
