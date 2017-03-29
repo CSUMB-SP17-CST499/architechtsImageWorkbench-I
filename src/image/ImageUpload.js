@@ -55,7 +55,7 @@ class ImageUpload extends Component {
     const params = {
         Key: this.state.file.name,
         Body: this.state.file,
-        Bucket: "storeimage.ag",
+        Bucket: "testing-uswest2",
         ACL: 'public-read',
     };
 
