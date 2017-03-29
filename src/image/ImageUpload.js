@@ -32,18 +32,23 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const access = process.env.AWS_ACCESS_KEY_ID;
-    const secret = process.env.AWS_SECRET_ACCESS_KEY;
+    let access = process.env.AWS_ACCESS_KEY_ID;
+    let secret = process.env.AWS_SECRET_ACCESS_KEY;
+    let region = 'us-west-2';
 
     if (access == null || secret == null) {
-      AWS.config.loadFromPath('../../json/credentials.json');
-    } else{
-      AWS.config.update({
-        accessKeyId: access,
-        secretAccessKey: secret,
-        "region": "us-west-1"
-      });
+      const localCredentials = require('../../json/credentials.json');
+      access = localCredentials.accessKeyId;
+      secret = localCredentials.secretAccessKey;
+      region = localCredentials.region;
     }
+
+    const credentials = new AWS.Credentials(access, secret);
+
+    AWS.config.update({
+      credentials,
+      region
+    });
 
     const s3image = new AWS.S3();
 
