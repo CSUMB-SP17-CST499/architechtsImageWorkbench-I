@@ -37,8 +37,7 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var fileBody = this.state.file;
-    ImageUploadService.upload(fileBody); //send to s3 bucket
+    ImageUploadService.upload(this.state.file); // send to s3 bucket
   }
 
   render() {
