@@ -1,7 +1,8 @@
-import AWS from 'aws-sdk';
 import React, { Component } from 'react';
 
 import S3Gallery from './imageSupport/S3Gallery';
+import ImageUploadService from './imageSupport/ImageUploadService';
+
 
 import './imageUpload.css';
 
@@ -32,41 +33,9 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let access = process.env.AWS_ACCESS_KEY_ID;
-    let secret = process.env.AWS_SECRET_ACCESS_KEY;
-    let region = 'us-west-2';
+    var fileBody = this.state.file;
+    ImageUploadService.upload(fileBody); //send to s3 bucket
 
-    if (access == null || secret == null) {
-      const localCredentials = require('../../json/credentials.json');
-      access = localCredentials.accessKeyId;
-      secret = localCredentials.secretAccessKey;
-      region = localCredentials.region;
-    }
-
-    const credentials = new AWS.Credentials(access, secret);
-
-    AWS.config.update({
-      credentials,
-      region
-    });
-
-    const s3image = new AWS.S3();
-
-    const params = {
-        Key: this.state.file.name,
-        Body: this.state.file,
-        Bucket: "testing-uswest2",
-        ACL: 'public-read',
-    };
-
-    const options = {
-        partSize: 10 * 1024 * 1024,
-        queueSize: 1,
-    };
-
-    s3image.upload(params, options, function(err, data) {
-        console.log(err, data);
-    });
   }
 
   render() {
