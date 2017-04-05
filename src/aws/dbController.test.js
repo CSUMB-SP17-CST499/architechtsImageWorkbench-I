@@ -1,4 +1,7 @@
-import DBController from './DBController';
+import AWS from 'aws-sdk';
+
+import awsconfig from './aws-config';
+import DBController from './dbcontroller';
 
 /*
     Tests for the DBController class. "test" table is cleared and repopulated
@@ -13,36 +16,20 @@ describe('DBController test suite', () => {
   beforeAll(() => {
     dbc = new DBController();
 
-    var init = require('../../json/pre/init.json');
+    AWS.config = awsconfig;
 
-    var del = function() {
-      return new Promise((fulfill, reject) => {
-        var lock1 = init.dels.length;
-        init.dels.forEach((del) => {
-          dbc.docClient.delete(del, (err, data) => {
-            if (err) reject();
-            lock1--;
-            if (lock1 == 0) fulfill();
-          });
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    const dels = require('../../json/pre/dels.json');
+    const puts = require('../../json/pre/puts.json');
+
+    return new Promise((fulfill, reject) => {
+      docClient.batchWrite(dels, (err, data) => {
+        if (err) reject();
+        docClient.batchWrite(puts, (err, data) => {
+          if (err) reject();
+          fulfill();
         });
       });
-    };
-
-    var put = function() {
-      return new Promise((fulfill, reject) => {
-        var lock2 = init.puts.length;
-        init.puts.forEach((put) => {
-          dbc.docClient.put(put, (err, data) => {
-            if (err) reject();
-            lock2--;
-            if (lock2 == 0) fulfill();
-          });
-        });
-      });
-    };
-
-    return del().then(() => {
-      return put();
     });
   });
 

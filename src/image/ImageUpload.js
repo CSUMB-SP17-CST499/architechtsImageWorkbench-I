@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import S3Gallery from './imageSupport/S3Gallery';
 import ImageUploadService from './imageSupport/ImageUploadService';
 
-
 import './imageUpload.css';
 
 class ImageUpload extends Component {
@@ -35,7 +34,6 @@ class ImageUpload extends Component {
     e.preventDefault();
     var fileBody = this.state.file;
     ImageUploadService.upload(fileBody); //send to s3 bucket
-
   }
 
   render() {

@@ -1,24 +1,93 @@
-var path = require('path');
-var webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const path = require('path');
+const webpack = require('webpack');
 
-var APP_DIR = path.resolve(__dirname, 'src');
-var BUILD_DIR = path.resolve(__dirname, 'public');
-
-var config = {
-  enrty: APP_DIR + '/index.js';
+module.exports = {
+  entry: path.resolve(__dirname, 'src', 'index'),
   output: {
-    path: BUILD_DIR,
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'static', 'js'),
+    filename: 'bundle.js',
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js?/,
-        include: APP_DIR,
-        loader: 'babel'
+        test: path.join(__dirname, 'src'),
+        use: {
+          loader: 'babel-loader',
+          options: 'cacheDirectory=.babel_cache',
+        },
+      },
+    ],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        loader: [
+          "babel-loader",
+          "eslint-loader"
+        ],
+        include: path.resolve(__dirname, 'src')
+      },
+      {
+        exclude: [
+          /\.html$/,
+          /\.(js|jsx)(\?.*)?$/,
+          /\.css$/,
+          /\.json$/,
+          /\.svg$/
+        ],
+        loader: 'url-loader',
+        query: {
+          limit: 10000,
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            enforce: 'post',
+            options: {
+              plugins: () => {
+                return [
+                  autoprefixer({
+                    browsers: [
+                      '>1%',
+                      'last 4 versions',
+                      'Firefox ESR',
+                      'not ie < 9', // React doesn't support IE8 anyway
+                    ]
+                  }),
+                ];
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.svg$/,
+        loader: 'file-loader',
+        query: {
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       }
+      // ** STOP ** Are you adding a new loader?
+      // Remember to add the new extension(s) to the "url" loader exclusion list.
     ]
   }
 };
-
-module.exports = config;

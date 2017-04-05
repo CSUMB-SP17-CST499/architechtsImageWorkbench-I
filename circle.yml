@@ -1,3 +1,8 @@
+machine:
+  node:
+    version: 7.8.0
+
+
 notify:
-    webhooks:
-        - url: https://imagengine.phacility.com/harbormaster/hook/circleci/
+  webhooks:
+    - url: https://imagengine.phacility.com/harbormaster/hook/circleci/
