@@ -1,6 +1,10 @@
 import AWS from 'aws-sdk';
 
+<<<<<<< HEAD
 import { dbconfig } from './aws-config';
+=======
+import awsconfig from './aws-config';
+>>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
 import DBController from './dbcontroller';
 
 /*
@@ -16,7 +20,11 @@ describe('DBController test suite', () => {
   beforeAll(() => {
     dbc = new DBController();
 
+<<<<<<< HEAD
     AWS.config = dbconfig;
+=======
+    AWS.config = awsconfig;
+>>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
 
     const docClient = new AWS.DynamoDB.DocumentClient();
     const dels = require('../../json/pre/dels.json');

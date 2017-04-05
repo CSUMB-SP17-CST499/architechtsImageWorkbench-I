@@ -1,6 +1,10 @@
 import AWS from 'aws-sdk';
 
+<<<<<<< HEAD
 import { dbconfig } from './aws-config';
+=======
+import awsconfig from './aws-config';
+>>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
 var ddbcb = require('./DynamoDBCallbacks.js');
 
 /*
@@ -14,7 +18,11 @@ var ddbcb = require('./DynamoDBCallbacks.js');
 */
 
 var DBController = function() {
+<<<<<<< HEAD
   AWS.config = dbconfig;
+=======
+  AWS.config = awsconfig;
+>>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
 
   this.dynamodb = new AWS.DynamoDB();
   this.docClient = new AWS.DynamoDB.DocumentClient();

@@ -38,7 +38,7 @@ class S3Gallery extends Component {
     this.s3 = new AWS.S3();
 
     this.state = {
-      images: [],
+      images: this.displayImages(),
     };
 
     this.displayImages();
@@ -46,23 +46,44 @@ class S3Gallery extends Component {
 
   displayImages() {
     // array of images to display
+    const access = process.env.AWS_ACCESS_KEY_ID;
+    const secret = process.env.AWS_SECRET_ACCESS_KEY;
+    AWS.config.update({
+      credentials: new AWS.Credentials(access, secret),
+      region: 'us-west-2',
+    });
+
+    const s3 = new AWS.S3();
+
     const params = {
       Bucket: 'testing-uswest2',
       Delimiter: '/',
     };
 
     const s3Images = [];
-    this.s3.listObjects(params, (err, data) => {
-      if (err) console.error(err);
+    s3.listObjects(params, (err, data) => {
+      if (err) throw err;
+      const contents = data.Contents;
 
-      shuffle(data.Contents).forEach((s3Object) => {
-        s3Images.push(S3Gallery.showImage(`${imgPrefix}${s3Object.Key}`));
-      });
-
-      this.setState({
-        images: s3Images,
-      });
+      contents.forEach(content => s3Images.push(content.Key));
     });
+    console.log(s3Images); // debugging purposes
+
+    const imgNames = [
+      'IwERLBl.jpg',
+      'testImage2.jpg',
+      'testImage5.jpg',
+    ];
+
+    console.log(imgNames); // testing
+
+    const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
+    const images = [];
+    imgNames.forEach((name) => {
+      images.push(this.showImage(`${imgPrefix}${name}`));
+    });
+
+    return images;
   }
 
   render() {
