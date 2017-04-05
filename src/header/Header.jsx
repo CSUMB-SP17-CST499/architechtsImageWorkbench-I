@@ -12,7 +12,11 @@ function Header(props) {
 }
 
 Header.propTypes = {
+<<<<<<< HEAD
   logo: React.PropTypes.string.isRequired,
+=======
+  logo: React.PropTypes.image.isRequired,
+>>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
   text: React.PropTypes.string.isRequired,
 };
 
