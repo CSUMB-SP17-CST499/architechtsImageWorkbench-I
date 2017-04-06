@@ -53,29 +53,17 @@ class S3Gallery extends Component {
     };
 
     const s3Images = [];
-    s3.listObjects(params, (err, data) => {
-      if (err) throw err;
-      const contents = data.Contents;
+    this.s3.listObjects(params, (err, data) => {
+      if (err) console.error(err);
 
-      contents.forEach(content => s3Images.push(content.Key));
+      shuffle(data.Contents).forEach((s3Object) => {
+        s3Images.push(S3Gallery.showImage(`${imgPrefix}${s3Object.Key}`));
+      });
+
+      this.setState({
+        images: s3Images,
+      });
     });
-    console.log(s3Images); // debugging purposes
-
-    const imgNames = [
-      'IwERLBl.jpg',
-      'testImage2.jpg',
-      'testImage5.jpg',
-    ];
-
-    console.log(imgNames); // testing
-
-    const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
-    const images = [];
-    imgNames.forEach((name) => {
-      images.push(this.showImage(`${imgPrefix}${name}`));
-    });
-
-    return images;
   }
 
   render() {

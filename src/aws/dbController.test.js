@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-import { dbconfig } from './aws-config';
+import { dbConfig } from './aws-config';
 import DBController from './dbcontroller';
 
 /*
@@ -16,7 +16,7 @@ describe('DBController test suite', () => {
   beforeAll(() => {
     dbc = new DBController();
 
-    AWS.config = dbconfig;
+    AWS.config = dbConfig;
 
     const docClient = new AWS.DynamoDB.DocumentClient();
     const dels = require('../../json/pre/dels.json');
