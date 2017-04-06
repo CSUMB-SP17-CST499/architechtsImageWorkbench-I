@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-import awsconfig from './aws-config';
+import { dbconfig } from './aws-config';
 var ddbcb = require('./DynamoDBCallbacks.js');
 
 /*
@@ -14,7 +14,7 @@ var ddbcb = require('./DynamoDBCallbacks.js');
 */
 
 var DBController = function() {
-  AWS.config = awsconfig;
+  AWS.config = dbconfig;
 
   this.dynamodb = new AWS.DynamoDB();
   this.docClient = new AWS.DynamoDB.DocumentClient();

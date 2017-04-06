@@ -9,24 +9,14 @@ module.exports = {
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx']
-  },
-  module: {
-    rules: [
-      {
-        test: path.join(__dirname, 'src'),
-        use: {
-          loader: 'babel-loader',
-          options: 'cacheDirectory=.babel_cache',
-        },
-      },
-    ],
+    extensions: ['.js', '.json', '.jsx'],
+    modules: ['node_modules']
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        loader: [
+        use: [
           "babel-loader",
           "eslint-loader"
         ],
@@ -48,32 +38,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'postcss-loader',
-            enforce: 'post',
-            options: {
-              plugins: () => {
-                return [
-                  autoprefixer({
-                    browsers: [
-                      '>1%',
-                      'last 4 versions',
-                      'Firefox ESR',
-                      'not ie < 9', // React doesn't support IE8 anyway
-                    ]
-                  }),
-                ];
-              }
-            }
-          }
-        ]
+        loader: 'style-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'css-loader'
       },
       {
         test: /\.json$/,

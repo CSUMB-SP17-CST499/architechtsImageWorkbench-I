@@ -4,6 +4,6 @@ import ReactDOM from 'react-dom';
 import Main from './main/Main';
 import './index.css';
 
-window.addEventListener('load', () => {
+window.onload = () => {
   ReactDOM.render(<Main />, document.getElementById('root'));
-});
+};

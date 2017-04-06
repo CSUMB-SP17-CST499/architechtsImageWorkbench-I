@@ -12,7 +12,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  logo: React.PropTypes.image.isRequired,
+  logo: React.PropTypes.string.isRequired,
   text: React.PropTypes.string.isRequired,
 };
 

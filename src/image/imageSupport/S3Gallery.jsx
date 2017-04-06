@@ -46,7 +46,6 @@ class S3Gallery extends Component {
 
   displayImages() {
     // array of images to display
-
     const params = {
       Bucket: 'testing-uswest2',
       Delimiter: '/',
