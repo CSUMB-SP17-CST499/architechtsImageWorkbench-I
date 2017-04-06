@@ -40,7 +40,6 @@ class ImageUpload extends Component {
       (<img className="imgU rl" alt="imgUrl" src={imagePreviewUrl} />) :
         'Please select an image for preview';
 
-
     return (
       <div className="previewComponent">
         <form onSubmit={this.handleSubmit}>
