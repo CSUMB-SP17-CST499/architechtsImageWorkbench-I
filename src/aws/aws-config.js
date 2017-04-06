@@ -10,7 +10,7 @@ const s3Region = 'us-west-2';
 
 const credentials = new AWS.Credentials(access, secret);
 
-const dbconfig = new AWS.Config({
+const dbConfig = new AWS.Config({
   credentials,
   region: dbRegion,
 });
@@ -20,9 +20,9 @@ const rekConfig = new AWS.Config({
   region: rekRegion,
 });
 
-const s3config = new AWS.Config({
+const s3Config = new AWS.Config({
   credentials,
   region: s3Region,
 });
 
-export { dbconfig, rekRegion, s3config };
+export { dbConfig, rekConfig, s3Config };
