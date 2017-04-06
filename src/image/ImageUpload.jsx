@@ -1,14 +1,11 @@
 /* global FileReader */
-import AWS from 'aws-sdk';
 import React, { Component } from 'react';
 
 import S3Gallery from './imageSupport/S3Gallery';
-import ImageUploadService from './imageSupport/ImageUploadService';
+import upload from './imageSupport/ImageUploadService';
 
 
 import './ImageUpload.css';
-
-const localCredentials = require('../../json/credentials.json');
 
 class ImageUpload extends Component {
   constructor(props) {
@@ -20,8 +17,6 @@ class ImageUpload extends Component {
   }
 
   handleImageChange(e) {
-    e.preventDefault();
-
     const reader = new FileReader();
     const file = e.target.files[0];
 
@@ -37,7 +32,7 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    ImageUploadService.upload(this.state.file); // send to s3 bucket
+    upload(this.state.file); // send to s3 bucket
   }
 
   render() {

@@ -60,6 +60,8 @@ class S3Gallery extends Component {
       Delimiter: '/',
     };
 
+    console.log(this.s3);
+
     const s3Images = [];
     s3.listObjects(params, (err, data) => {
       if (err) throw err;
