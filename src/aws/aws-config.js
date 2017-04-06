@@ -1,5 +1,12 @@
 import AWS from 'aws-sdk';
 
+<<<<<<< HEAD
+=======
+const localCred = require('../../json/credentials.json');
+
+const access = process.env.AWS_ACCESS_KEY_ID || localCred.accessKeyId;
+const secret = process.env.AWS_SECRET_ACCESS_KEY || localCred.secretAccessKey;
+>>>>>>> merging two old commits
 const dbRegion = 'us-west-1';
 const rekRegion = 'us-west-2';
 const s3Region = 'us-west-2';
@@ -25,9 +32,13 @@ const rekConfig = new AWS.Config({
   region: rekRegion,
 });
 
+<<<<<<< HEAD
 const s3Config = new AWS.Config({
   credentials,
   region: s3Region,
 });
 
 export { dbConfig, rekConfig, s3Config };
+=======
+export { dbconfig, s3config };
+>>>>>>> merging two old commits
