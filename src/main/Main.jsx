@@ -4,7 +4,7 @@ import Header from '../header/Header';
 import ImageUpload from '../image/ImageUpload';
 import logo from '../../img/pan-logo.png';
 
-import './main.css';
+import './Main.css';
 
 function Main() {
   return (
