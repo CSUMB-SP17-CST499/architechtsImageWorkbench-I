@@ -22,3 +22,6 @@ json/credentials.json
 
 #JS Bundle
 static/js/bundle.js
+
+#Transpile Cache
+.babel_cache
