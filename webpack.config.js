@@ -10,42 +10,6 @@ module.exports = {
     filename: 'bundle.js',
   },
   resolve: {
-<<<<<<< HEAD
-    extensions: ['.js', '.json', '.jsx'],
-    modules: ['node_modules']
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        use: [
-          "babel-loader",
-          "eslint-loader"
-        ],
-        include: path.resolve(__dirname, 'src')
-      },
-      {
-        exclude: [
-          /\.html$/,
-          /\.(js|jsx)(\?.*)?$/,
-          /\.css$/,
-          /\.json$/,
-          /\.svg$/
-        ],
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
-        }
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader'
-      },
-      {
-        test: /\.css$/,
-        loader: 'css-loader'
-=======
     extensions: ['.js', '.json', '.jsx']
   },
   module: {
@@ -111,7 +75,6 @@ module.exports = {
             }
           }
         ]
->>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
       },
       {
         test: /\.json$/,
