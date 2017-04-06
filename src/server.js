@@ -3,11 +3,7 @@ import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-<<<<<<< HEAD
 //import Main from './main/Main';
-=======
-import Main from './main/Main';
->>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
 
 const app = express();
 
@@ -24,19 +20,12 @@ app.get('*', (req, res) => {
   let status = 200;
 
   if (process.env.UNIVERSAL) {
-    const context = {}
-<<<<<<< HEAD
+    const context = {};
     /*
     markup = renderToString(
       <Main />,
     );
     */
-=======
-    markup = renderToString(
-      <Main />,
-    );
-
->>>>>>> pushing config changes and changed code due to style guide. Nodemon is WIP
     // context.url will contain the URL to redirect to if a <Redirect> was used
     if (context.url) {
       return res.redirect(302, context.url);
