@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 
 import { s3config } from '../../aws/aws-config';
-import tagImage from './TagImage';
+import tagImage from './tagImage';
 
 function upload(file) {
   AWS.config = s3config;
