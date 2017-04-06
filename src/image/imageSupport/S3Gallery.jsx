@@ -38,7 +38,7 @@ class S3Gallery extends Component {
     this.s3 = new AWS.S3();
 
     this.state = {
-      images: this.displayImages(),
+      images: [],
     };
 
     this.displayImages();

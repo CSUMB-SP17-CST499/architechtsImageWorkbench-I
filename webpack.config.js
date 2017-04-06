@@ -15,19 +15,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: path.join(__dirname, 'src'),
-        use: {
-          loader: 'babel-loader',
-          options: 'cacheDirectory=.babel_cache',
-        },
-      },
-    ],
-  },
-  module: {
-    rules: [
-      {
         test: /\.(js|jsx)$/,
-        loader: [
+        use: [
           "babel-loader",
           "eslint-loader"
         ],
@@ -50,30 +39,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'postcss-loader',
-            enforce: 'post',
-            options: {
-              plugins: () => {
-                return [
-                  autoprefixer({
-                    browsers: [
-                      '>1%',
-                      'last 4 versions',
-                      'Firefox ESR',
-                      'not ie < 9', // React doesn't support IE8 anyway
-                    ]
-                  }),
-                ];
-              }
-            }
-          }
+          'style-loader',
+          'css-loader'
         ]
       },
       {

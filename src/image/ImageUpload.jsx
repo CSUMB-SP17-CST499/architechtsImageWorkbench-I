@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import S3Gallery from './imageSupport/S3Gallery';
 import upload from './imageSupport/imageUploadService';
 
-
 import './ImageUpload.css';
 
 class ImageUpload extends Component {

@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-import { s3config as rekConfig } from '../../aws/aws-config';
+import { rekConfig } from '../../aws/aws-config';
 
 function tagImage(file) {
   AWS.config = rekConfig;
