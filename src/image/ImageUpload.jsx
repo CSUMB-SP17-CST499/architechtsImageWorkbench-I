@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import S3Gallery from './imageSupport/S3Gallery';
-import upload from './imageSupport/ImageUploadService';
+import upload from './imageSupport/imageUploadService';
 
 
 import './ImageUpload.css';
