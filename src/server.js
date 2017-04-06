@@ -3,7 +3,7 @@ import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-import Main from './main/Main';
+//import Main from './main/Main';
 
 const app = express();
 
@@ -21,10 +21,11 @@ app.get('*', (req, res) => {
 
   if (process.env.UNIVERSAL) {
     const context = {}
+    /*
     markup = renderToString(
       <Main />,
     );
-
+    */
     // context.url will contain the URL to redirect to if a <Redirect> was used
     if (context.url) {
       return res.redirect(302, context.url);

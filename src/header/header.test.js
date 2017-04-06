@@ -10,7 +10,7 @@ describe('<Header /> shallow rendering', () => {
   let header;
 
   beforeAll(() => {
-    header = shallow(<Header />)
+    header = shallow(<Header logo={logo} text="Designers' Image Engine"/>)
   });
 
   test('<Header /> is rendered as type "div"', () => {
