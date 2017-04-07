@@ -1,58 +1,48 @@
 import AWS from 'aws-sdk';
 import React, {Component} from 'react'
-import Gallery from 'react-photo-gallery';
 
 import '../imageUpload.css';
 
 class S3Gallery extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      images: this.displayImages(),
-    };
+    this.displayImages();
   }
 
   displayImages() {
-    //array of images to display
-    const access = process.env.AWS_ACCESS_KEY_ID;
-    const secret = process.env.AWS_SECRET_ACCESS_KEY;
+    const localCredentials = require('../../../json/credentials.json');
+    let access = localCredentials.accessKeyId;
+    let secret = localCredentials.secretAccessKey;
+    let region = localCredentials.region;
+
+    const credentials = new AWS.Credentials(access, secret);
     AWS.config.update({
-      credentials: new AWS.Credentials(access, secret),
-      region: 'us-west-2',
+      credentials,
+      region
     });
 
     const s3 = new AWS.S3();
-
     const params = {
       Bucket: 'testing-uswest2',
       Delimiter: '/',
     };
-
-    const s3Images = [];
-    s3.listObjects(params, function (err, data) {
-      if(err)throw err;
-      let contents = data.Contents;
-
-      contents.forEach(content => s3Images.push(content.Key));
-    });
-    console.log(s3Images); //debugging purposes
-
-    const imgNames = [
-      "IwERLBl.jpg",
-      "testImage2.jpg",
-      "testImage5.jpg",
-    ];
-
-    console.log(imgNames); // testing
-
     const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
-    const images = [];
-    imgNames.forEach((name) => {
-      images.push(this.showImage(`${imgPrefix}${name}`));
-    });
+    const s3Images = [];
+    const actualImages = [];
+    s3.listObjects(params, (err, data)  => {
+      if (err) { console.log(err, err.stack); }
+      else {
+        for(var i in data.Contents) {
+          s3Images.push(data.Contents[i].Key);
+        }
 
-    return images;
+        s3Images.forEach((name) => {
+          actualImages.push(this.showImage(`${imgPrefix}${name}`));
+        });
+
+        this.props.addImages(actualImages);
+      }
+    });
   }
 
   showImage(src, width=600, height=600, aspectRatio=1.1) {
@@ -69,7 +59,7 @@ class S3Gallery extends Component {
   }
 
   render() {
-    return <Gallery photos={this.state.images} />;
+    return (<div> </div>);
   }
 }
 

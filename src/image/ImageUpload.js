@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 
 import S3Gallery from './imageSupport/S3Gallery';
 import ImageUploadService from './imageSupport/ImageUploadService';
-
+import DisplayImages from './imageSupport/DisplayImages';
 
 import './imageUpload.css';
 
 class ImageUpload extends Component {
   constructor(props) {
     super(props);
-    this.state = {imagePreviewUrl: ''};
+    this.state = {
+      imagePreviewUrl: '',
+      images: []
+    };
 
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,7 +38,10 @@ class ImageUpload extends Component {
     e.preventDefault();
     var fileBody = this.state.file;
     ImageUploadService.upload(fileBody); //send to s3 bucket
+  }
 
+  saveImages(images) {
+    this.setState({images: images})
   }
 
   render() {
@@ -54,7 +60,8 @@ class ImageUpload extends Component {
         <div className='imgPreview'>
           {$imagePreview}
         </div>
-        <S3Gallery />
+        <S3Gallery addImages={this.saveImages.bind(this)}/>
+        <DisplayImages imageItems={this.state.images}/>
       </div>
     );
   }
