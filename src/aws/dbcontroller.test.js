@@ -1,4 +1,4 @@
-import DBController from './DBController';
+import DBController from './dbcontroller';
 
 /*
     Tests for the DBController class. "test" table is cleared and repopulated
