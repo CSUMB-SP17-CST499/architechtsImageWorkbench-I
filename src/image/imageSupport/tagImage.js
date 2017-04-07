@@ -6,7 +6,7 @@ function tagImage(file) {
     const localCredentials = require('../../../json/credentials.json');
     let  access = localCredentials.accessKeyId;
     let  secret = localCredentials.secretAccessKey;
-    let  region = localCredentials.region;
+    let  region = 'us-west-2';
 
     const credentials = new AWS.Credentials(access, secret);
 
