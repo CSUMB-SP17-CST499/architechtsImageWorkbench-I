@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import React, {Component} from 'react'
 
-import '../imageUpload.css';
+import '../ImageUpload.css';
 
 class S3Gallery extends Component {
   constructor(props) {

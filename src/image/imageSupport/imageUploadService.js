@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
-import tagImage from './TagImage';
+
+import tagImage from './tagImage';
 
 function upload(file) {
 

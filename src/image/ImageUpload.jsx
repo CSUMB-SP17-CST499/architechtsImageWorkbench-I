@@ -4,7 +4,7 @@ import S3Gallery from './imageSupport/S3Gallery';
 import ImageUploadService from './imageSupport/ImageUploadService';
 import DisplayImages from './imageSupport/DisplayImages';
 
-import './imageUpload.css';
+import './ImageUpload.css';
 
 class ImageUpload extends Component {
   constructor(props) {
