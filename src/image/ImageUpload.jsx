@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import S3Gallery from './imageSupport/S3Gallery';
-import ImageUploadService from './imageSupport/ImageUploadService';
+import ImageUploadService from './imageSupport/imageUploadService';
 import DisplayImages from './imageSupport/DisplayImages';
 
 import './ImageUpload.css';

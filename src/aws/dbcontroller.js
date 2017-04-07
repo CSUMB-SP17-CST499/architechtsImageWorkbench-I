@@ -1,5 +1,5 @@
 var AWS = require('aws-sdk');
-var ddbcb = require('./dyanmo-callbacks.js');
+var ddbcb = require('./dynamo-callbacks.js');
 
 /*
     This file constructs a DBController object in order to access a DynamoDB
