@@ -17,6 +17,8 @@ function tagImage(file) {
 
   const rekognition = new AWS.Rekognition();
 
+  var imageTags = new Array();
+  var imageConfidence = new Array();
 
     var params = {
         Image: {
@@ -35,14 +37,27 @@ function tagImage(file) {
             console.log(err, err.stack); // an error occurred
        else {
            for(var i = 0; i < data.Labels.length; i++) {
-               console.log(
-                  data.Labels[i]["Confidence"] + "   " + data.Labels[i]["Name"]
-              );
+              imageTags.push(data.Labels[i]["Name"])
+              imageConfidence.push(data.Labels[i]["Confidence"])
          }
+
+         sendToDB(file.name, imageTags, imageConfidence);
        }
     });
 
 }
 
-const TagImage = {tagImage}
+function sendToDB(fileName, tags, confidence){
+
+    const imgPath = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
+
+    console.log(fileName)
+    console.log(tags);
+    console.log(confidence);
+    //TODO
+      //send to database
+      //user fileName, tags, and path
+}
+
+const TagImage = {tagImage, sendToDB}
 export default TagImage;
