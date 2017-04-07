@@ -30,7 +30,7 @@ describe('<ImageUpload /> shallow rendering', () => {
   });
 
   test('ImageUpload has three children', () => {
-    expect(imageUpload.children().length).toBe(3);
+    expect(imageUpload.children().length).toBe(4);
   });
 
   test('ImageUpload has one div child', () => {
