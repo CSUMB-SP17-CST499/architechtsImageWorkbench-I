@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
 import React, {Component} from 'react'
-import Gallery from 'react-photo-gallery';
 
 import '../imageUpload.css';
 
@@ -9,14 +8,15 @@ class S3Gallery extends Component {
     super(props);
 
     this.state = {
-      images: this.displayImages(),
+      images: this.displayImages,
     };
+    this.displayImages();
   }
 
   displayImages() {
     //array of images to display
-    const access = process.env.AWS_ACCESS_KEY_ID;
-    const secret = process.env.AWS_SECRET_ACCESS_KEY;
+    const access = "AKIAIO3XMHQ4DRH3WS7Q";
+    const secret = "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";
     AWS.config.update({
       credentials: new AWS.Credentials(access, secret),
       region: 'us-west-2',
@@ -30,29 +30,24 @@ class S3Gallery extends Component {
     };
 
     const s3Images = [];
-    s3.listObjects(params, function (err, data) {
+    const actualImages = [];
+    s3.listObjects(params, (err, data)  => {
       if(err)throw err;
-      let contents = data.Contents;
+      else {
+          for(var i in data.Contents) {
+            s3Images.push(data.Contents[i].Key);
+          }
+          const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
+          s3Images.forEach((name) => {
+            actualImages.push(this.showImage(`${imgPrefix}${name}`));
+          });
 
-      contents.forEach(content => s3Images.push(content.Key));
-    });
-    console.log(s3Images); //debugging purposes
+          console.log("teset");
 
-    const imgNames = [
-      "IwERLBl.jpg",
-      "testImage2.jpg",
-      "testImage5.jpg",
-    ];
+          this.props.addImages(actualImages);
+      }
+  });
 
-    console.log(imgNames); // testing
-
-    const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
-    const images = [];
-    imgNames.forEach((name) => {
-      images.push(this.showImage(`${imgPrefix}${name}`));
-    });
-
-    return images;
   }
 
   showImage(src, width=600, height=600, aspectRatio=1.1) {
@@ -69,7 +64,9 @@ class S3Gallery extends Component {
   }
 
   render() {
-    return <Gallery photos={this.state.images} />;
+    //   this.displayImages(this.state.images);
+    //   console.log(this.state.images);
+    return  <h3> Fallas </h3>
   }
 }
 
