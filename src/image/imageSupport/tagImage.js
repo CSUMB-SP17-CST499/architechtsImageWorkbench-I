@@ -1,20 +1,9 @@
 import AWS from 'aws-sdk';
 
+import { rekConfig } from '../../aws/aws-config';
+
 function tagImage(file) {
-    console.log(file);
-
-    const localCredentials = require('../../../json/credentials.json');
-    let  access = localCredentials.accessKeyId;
-    let  secret = localCredentials.secretAccessKey;
-    let  region = localCredentials.region;
-
-    const credentials = new AWS.Credentials(access, secret);
-
-  AWS.config.update({
-      credentials,
-      region
-  });
-
+  AWS.config = rekConfig;
   const rekognition = new AWS.Rekognition();
 
 

@@ -1,20 +1,10 @@
 import AWS from 'aws-sdk';
-import tagImage from './TagImage';
+
+import { s3Config } from '../../aws/aws-config';
+import tagImage from './tagImage';
 
 function upload(file) {
-
-    const localCredentials = require('../../../json/credentials.json');
-      let access = localCredentials.accessKeyId;
-      let secret = localCredentials.secretAccessKey;
-      let region = localCredentials.region;
-
-    const credentials = new AWS.Credentials(access, secret);
-
-    AWS.config.update({
-        credentials,
-        region
-    });
-
+    AWS.config = s3Config;
     const s3image = new AWS.S3();
 
     const params = {
