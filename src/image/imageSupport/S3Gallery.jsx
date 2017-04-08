@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import React, {Component} from 'react'
 
-import '../imageUpload.css';
+import '../ImageUpload.css';
 
 class S3Gallery extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class S3Gallery extends Component {
     const localCredentials = require('../../../json/credentials.json');
     let access = localCredentials.accessKeyId;
     let secret = localCredentials.secretAccessKey;
-    let region = localCredentials.region;
+    let region = 'us-west-2';
 
     const credentials = new AWS.Credentials(access, secret);
     AWS.config.update({
