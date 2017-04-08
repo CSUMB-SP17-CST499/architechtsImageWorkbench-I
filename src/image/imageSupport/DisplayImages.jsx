@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Gallery from 'react-photo-gallery';
 
-class Images extends Component {
-
-  render() {
-    return(<Gallery photos={this.props.imageItems} />);
-  }
+function DisplayImages(props) {
+  return <Gallery photos={props.imageItems} />;
 }
 
-export default Images;
+DisplayImages.propTypes = {
+  imageItems: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+};
+
+export default DisplayImages;
