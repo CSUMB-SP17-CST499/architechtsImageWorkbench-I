@@ -5,8 +5,8 @@ const dbRegion = 'us-west-1';
 const rekRegion = 'us-west-2';
 const s3Region = 'us-west-2';
 
-let access = process.env.ACCESS_KEY_ID;
-let secret = process.env.SECRET_ACCESS_KEY;
+let access = process.env.AWS_ACCESS_KEY_ID;
+let secret = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (access == null || secret == null) {
   const localCredentials = require('../../json/credentials.json');
