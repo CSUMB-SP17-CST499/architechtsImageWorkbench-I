@@ -1,0 +1,34 @@
+/* eslint global-require: "warn" */
+import AWS from 'aws-sdk';
+
+const dbRegion = 'us-west-1';
+const rekRegion = 'us-west-2';
+const s3Region = 'us-west-2';
+
+let access = process.env.ACCESS_KEY_ID;
+let secret = process.env.SECRET_ACCESS_KEY;
+
+if (access == null || secret == null) {
+  const localCredentials = require('../../json/credentials.json');
+  access = localCredentials.accessKeyId;
+  secret = localCredentials.secretAccessKey;
+}
+
+const credentials = new AWS.Credentials(access, secret);
+
+const dbConfig = new AWS.Config({
+  credentials,
+  region: dbRegion,
+});
+
+const rekConfig = new AWS.Config({
+  credentials,
+  region: rekRegion,
+});
+
+const s3Config = new AWS.Config({
+  credentials,
+  region: s3Region,
+});
+
+export { dbConfig, rekConfig, s3Config };
