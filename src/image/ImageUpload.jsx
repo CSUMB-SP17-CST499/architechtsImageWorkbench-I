@@ -1,7 +1,8 @@
+/* global FileReader */
 import React, { Component } from 'react';
 
-import S3Gallery from './imageSupport/S3Gallery';
-import ImageUploadService from './imageSupport/imageUploadService';
+import { getImages } from './imageSupport/s3controller';
+import upload from './imageSupport/imageUploadService';
 import DisplayImages from './imageSupport/DisplayImages';
 
 import './ImageUpload.css';
@@ -11,8 +12,14 @@ class ImageUpload extends Component {
     super(props);
     this.state = {
       imagePreviewUrl: '',
-      images: []
+      images: [],
     };
+
+    getImages((images) => {
+      this.setState({
+        images,
+      });
+    });
 
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,7 +34,7 @@ class ImageUpload extends Component {
     reader.onloadend = () => {
       this.setState({
         file,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: reader.result,
       });
     };
 
@@ -36,32 +43,35 @@ class ImageUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var fileBody = this.state.file;
-    ImageUploadService.upload(fileBody); //send to s3 bucket
+    upload(this.state.file); // send to s3 bucket
   }
 
   saveImages(images) {
-    this.setState({images: images})
+    this.setState({ images });
   }
 
   render() {
-    let {imagePreviewUrl} = this.state;
-    let $imagePreview = imagePreviewUrl ?
+    const { imagePreviewUrl } = this.state;
+    const $imagePreview = imagePreviewUrl ?
       (<img className="imgUrl" alt="imgUrl" src={imagePreviewUrl} />) :
         'Please select an image for preview';
 
-
     return (
-      <div className='previewComponent'>
+      <div className="previewComponent">
         <form onSubmit={this.handleSubmit}>
-          <input className='fileInput' type='file' onChange={this.handleImageChange} />
-          <button className='submitButton' type='submit' onClick={this.handleSubmit}>Upload Image</button>
+          <input className="fileInput" type="file" onChange={this.handleImageChange} />
+          <button
+            className="submitButton"
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Upload Image
+          </button>
         </form>
-        <div className='imgPreview'>
+        <div className="imgPreview">
           {$imagePreview}
         </div>
-        <S3Gallery addImages={this.saveImages.bind(this)}/>
-        <DisplayImages imageItems={this.state.images}/>
+        <DisplayImages imageItems={this.state.images} />
       </div>
     );
   }

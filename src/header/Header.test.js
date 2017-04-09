@@ -10,7 +10,7 @@ describe('<Header /> shallow rendering', () => {
   let header;
 
   beforeAll(() => {
-    header = shallow(<Header />)
+    header = shallow(<Header logo={logo} text="Designers' Image Engine" />)
   });
 
   test('<Header /> is rendered as type "div"', () => {
@@ -19,7 +19,7 @@ describe('<Header /> shallow rendering', () => {
 
   test('<Header /> is rendered with className "header"', () => {
     expect(header.hasClass('header')).toBe(true);
-  })
+  });
 
   test('<Header /> contains an "img" and a "h2"', () => {
     var nChildren = header.children().length;
