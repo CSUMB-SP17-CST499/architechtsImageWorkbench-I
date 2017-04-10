@@ -19,3 +19,6 @@ yarn-error.log*
 #AWS credentials
 src/json/
 json/credentials.json
+
+#Webpack Bundle
+static/js/bundle.js
