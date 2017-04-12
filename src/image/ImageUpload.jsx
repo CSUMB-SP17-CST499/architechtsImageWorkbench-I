@@ -53,7 +53,7 @@ class ImageUpload extends React.Component {
     e.preventDefault();
      // Image Engine full process
     submit(this.state.file, this.imgWidth, this.imgHeight, () => {
-      location.reload();
+      // location.reload();
     });
   }
 
