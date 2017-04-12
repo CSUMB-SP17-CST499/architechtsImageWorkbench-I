@@ -2,6 +2,23 @@ import AWS from 'aws-sdk';
 
 import { rekConfig } from '../../aws/aws-config';
 
+const imageTags = [];
+const imageConfidence = [];
+
+function sendToDB(fileName, tags, confidence) {
+  const imgPath = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
+
+  // testing purposes, will remove after
+  console.log(fileName);
+  console.log(tags);
+  console.log(confidence);
+  console.log(imgPath);
+
+  // TODO
+  // send to database
+  // user fileName, tags, and path
+}
+
 function tagImage(file) {
   console.log(file);
 
@@ -26,8 +43,10 @@ function tagImage(file) {
       console.log(err, err.stack); // an error occurred
     } else {
       for (let i = 0; i < data.Labels.length; i += 1) {
-        console.log(`${data.Labels[i].Confidence}   ${data.Labels[i].Name}`);
+        imageTags.push(data.Labels[i].Name);
+        imageConfidence.push(data.Labels[i].Confidence);
       }
+      sendToDB(file.name, imageTags, imageConfidence);
     }
   });
 }
