@@ -33,7 +33,7 @@ function getImages(callback, shuffle = false, TableName = 'Images') {
     } else {
       console.log(data);
       const items = shuffle ? shuffleArr(data.Items) : data.Items;
-      for (let i = 0; i < 6; i += 1) {
+      for (let i = 0; i < items.length; i += 1) {
         const image = items[i];
         images.push(
           showImage(`${imgPrefix}${image.Key}`, image.width, image.height),
