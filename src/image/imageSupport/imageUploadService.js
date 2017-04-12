@@ -1,16 +1,22 @@
+/* eslint-env browser */
 import AWS from 'aws-sdk';
 
 import { s3Config } from '../../aws/aws-config';
-import tagImage from './tagImage';
+import DBController from '../../aws/dbcontroller';
+import tagImage from './rekognition';
+
+const dbc = new DBController();
 
 function upload(file) {
   AWS.config = s3Config;
   const s3image = new AWS.S3();
+  const Bucket = 'testing-uswest2';
+  const Key = file.name;
 
   const params = {
-    Key: file.name,
+    Bucket,
+    Key,
     Body: file,
-    Bucket: 'testing-uswest2',
     ACL: 'public-read',
   };
 
@@ -19,11 +25,27 @@ function upload(file) {
     queueSize: 1,
   };
 
-  s3image.upload(params, options, (err, data) => {
+  s3image.upload(params, options, (err) => {
     if (err) {
-      console.log(err, data);
+      console.error(err, err.stack);
     } else {
-      tagImage(file); // send to rekognition to tag image
+      tagImage(file, (err2, data) => { // send to rekognition to tag image
+        if (err2) {
+          console.error(err2);
+          return;
+        }
+        const imageParams = {
+          TableName: 'Images',
+          Item: {
+            Bucket,
+            Key,
+            Labels: data.Labels,
+          },
+        };
+        dbc.putImage(imageParams, (err3) => {
+          if (err3) console.error(err3);
+        });
+      });
     }
   });
 }

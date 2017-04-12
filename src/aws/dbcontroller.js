@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk';
 
 import { dbConfig } from './aws-config';
-const ddbcb = require('./dynamo-callbacks.js');
+
+const ddbcb = require('./dynamo-callbacks');
 
 /*
     This file constructs a DBController object in order to access a DynamoDB
@@ -13,31 +14,42 @@ const ddbcb = require('./dynamo-callbacks.js');
       delete, get, put, update
 */
 
-var DBController = function() {
-  AWS.config = dbConfig;
+class DBController {
+  constructor() {
+    AWS.config = dbConfig;
+    this.dynamodb = new AWS.DynamoDB();
+    this.docClient = new AWS.DynamoDB.DocumentClient();
+  }
 
-  this.dynamodb = new AWS.DynamoDB();
-  this.docClient = new AWS.DynamoDB.DocumentClient();
+  delete(params, callback = ddbcb.delete) {
+    this.docClient.delete(params, callback);
+  }
+
+  get(params, callback = ddbcb.get) {
+    this.docClient.get(params, callback);
+  }
+
+  getImage(params, callback = ddbcb.get) {
+    this.get(params, (err, data) => {
+      const image = data;
+      delete image.Item.BucketKey;
+      callback(err, image);
+    });
+  }
+
+  put(params, callback = ddbcb.put) {
+    this.docClient.put(params, callback);
+  }
+
+  putImage(image, callback = ddbcb.put) {
+    const params = image;
+    params.Item.BucketKey = `${params.Item.Bucket}|${params.Item.Key}`;
+    this.put(params, callback);
+  }
+
+  update(params, callback = ddbcb.update) {
+    this.docClient.update(params, callback);
+  }
 }
 
-DBController.prototype.delete = function(params, callback) {
-  if (callback == null) callback = ddbcb.delete;
-  this.docClient.delete(params, callback);
-}
-
-DBController.prototype.get = function(params, callback) {
-  if (callback == null) callback = ddbcb.get;
-  this.docClient.get(params, callback);
-}
-
-DBController.prototype.put = function(params, callback) {
-  if (callback == null) callback = ddbcd.put;
-  this.docClient.put(params, callback);
-}
-
-DBController.prototype.update = function(params, callback) {
-  if (callback == null) callback = ddbcd.update;
-  this.docClient.update(params, callback);
-}
-
-module.exports = DBController;
+export default DBController;

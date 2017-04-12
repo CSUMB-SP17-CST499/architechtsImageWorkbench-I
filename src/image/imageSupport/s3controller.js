@@ -27,7 +27,7 @@ function shuffleArr(a) {
 AWS.config = s3Config;
 const s3 = new AWS.S3();
 
-function getImages(callback, Bucket = 'testing-uswest2', shuffle = false, Delimiter = '/') {
+function getImages(callback, shuffle = false, Bucket = 'testing-uswest2', Delimiter = '/') {
   const params = {
     Bucket,
     Delimiter,

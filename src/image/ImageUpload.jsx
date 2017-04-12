@@ -1,5 +1,5 @@
-/* global FileReader */
-import React, { Component } from 'react';
+/* eslint-env browser, global FileReader */
+import React from 'react';
 
 import { getImages } from './imageSupport/s3controller';
 import upload from './imageSupport/imageUploadService';
@@ -7,7 +7,7 @@ import DisplayImages from './imageSupport/DisplayImages';
 
 import './ImageUpload.css';
 
-class ImageUpload extends Component {
+class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,14 +15,16 @@ class ImageUpload extends Component {
       images: [],
     };
 
+    this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
     getImages((images) => {
       this.setState({
         images,
       });
-    });
-
-    this.handleImageChange = this.handleImageChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    }, true);
   }
 
   handleImageChange(e) {
@@ -35,6 +37,12 @@ class ImageUpload extends Component {
       this.setState({
         file,
         imagePreviewUrl: reader.result,
+      }, () => {
+        const img = document.getElementById('prev');
+        img.onload = () => {
+          console.log(img.height);
+          console.log(img.width);
+        };
       });
     };
 
@@ -53,7 +61,7 @@ class ImageUpload extends Component {
   render() {
     const { imagePreviewUrl } = this.state;
     const $imagePreview = imagePreviewUrl ?
-      (<img className="imgUrl" alt="imgUrl" src={imagePreviewUrl} />) :
+      (<img className="imgUrl" id="prev" alt="imgUrl" src={imagePreviewUrl} />) :
         'Please select an image for preview';
 
     return (
