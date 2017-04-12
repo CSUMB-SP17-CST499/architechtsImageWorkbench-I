@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import ReactTestUtils from 'react-test-utils';
 
 import ImageUpload from './ImageUpload';
 

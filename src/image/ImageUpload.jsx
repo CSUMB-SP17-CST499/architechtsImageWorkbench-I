@@ -1,8 +1,8 @@
 /* eslint-env browser, global FileReader */
 import React from 'react';
 
-import { getImages } from './imageSupport/s3controller';
-import upload from './imageSupport/imageUploadService';
+import { getImages } from './imageSupport/image-retrieve';
+import { submit } from './image-engine';
 import DisplayImages from './imageSupport/DisplayImages';
 
 import './ImageUpload.css';
@@ -40,8 +40,8 @@ class ImageUpload extends React.Component {
       }, () => {
         const img = document.getElementById('prev');
         img.onload = () => {
-          console.log(img.height);
-          console.log(img.width);
+          this.imgWidth = img.width;
+          this.imgHeight = img.height;
         };
       });
     };
@@ -51,7 +51,7 @@ class ImageUpload extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    upload(this.state.file); // send to s3 bucket
+    submit(this.state.file, this.imgWidth, this.imgHeight); // send to s3 bucket
   }
 
   saveImages(images) {

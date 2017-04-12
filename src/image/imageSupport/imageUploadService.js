@@ -2,10 +2,10 @@
 import AWS from 'aws-sdk';
 
 import { s3Config } from '../../aws/aws-config';
-import DBController from '../../aws/dbcontroller';
+import dbc from '../../aws/dbcontroller';
 import tagImage from './rekognition';
 
-const dbc = new DBController();
+// const dbc = new DBController();
 
 function upload(file) {
   AWS.config = s3Config;

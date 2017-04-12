@@ -1,21 +1,9 @@
 import AWS from 'aws-sdk';
 
-import { rekConfig } from '../../aws/aws-config';
+import rek from '../../aws/rekcontroller';
 
-AWS.config = rekConfig;
-const rekognition = new AWS.Rekognition();
 
-const defaultCallback = (err, data) => {
-  if (err) {
-    console.log(err, err.stack); // an error occurred
-  } else {
-    data.Labels.forEach((label) => {
-      console.log(`${label.Confidence}   ${label.Name}`);
-    });
-  }
-};
-
-function tagImage(file, callback = defaultCallback) {
+function tagImage(file, callback) {
   const params = {
     Image: {
       S3Object: {
@@ -27,7 +15,7 @@ function tagImage(file, callback = defaultCallback) {
     MinConfidence: 75,
   };
 
-  rekognition.detectLabels(params, callback);
+  rek.detectLabels(params, callback);
 }
 
 export default tagImage;
