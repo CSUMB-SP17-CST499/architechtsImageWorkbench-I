@@ -33,7 +33,7 @@ function store(data, Key, width, height, callback) {
   dbc.putImage(params, callback);
 }
 
-function upload(file, ACL = 'public-read') {
+function upload(file, callback, ACL = 'public-read') {
   const params = {
     Bucket,
     ACL,
@@ -41,30 +41,31 @@ function upload(file, ACL = 'public-read') {
     Body: file,
   };
 
-  s3.upload(params);
+  s3.upload(params, callback);
 }
 
-function submit(file, width, height) {
+function submit(file, width, height, callback) {
   upload(file, (err, data) => {
     if (err) {
       console.error(err);
     } else {
       console.log(data);
     }
-  });
-  const Key = file.name;
-  label(Key, (err, data) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log(data);
-    }
-    store(data, Key, width, height, (err2, data2) => {
+    const Key = file.name;
+    label(Key, (err2, data2) => {
       if (err2) {
         console.error(err2);
       } else {
         console.log(data2);
       }
+      store(data2, Key, width, height, (err3, data3) => {
+        if (err3) {
+          console.error(err3);
+        } else {
+          console.log(data3);
+        }
+        callback();
+      });
     });
   });
 }

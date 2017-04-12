@@ -51,7 +51,10 @@ class ImageUpload extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    submit(this.state.file, this.imgWidth, this.imgHeight); // send to s3 bucket
+     // Image Engine full process
+    submit(this.state.file, this.imgWidth, this.imgHeight, () => {
+      location.reload();
+    });
   }
 
   saveImages(images) {
