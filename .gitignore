@@ -21,4 +21,4 @@ src/json/
 json/credentials.json
 
 #Webpack Bundle
-static/js/bundle.js
+public/js/bundle.js
