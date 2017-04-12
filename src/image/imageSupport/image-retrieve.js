@@ -1,6 +1,6 @@
 import dbc from '../../aws/dbcontroller';
 
-function showImage(src, width = 600, height = 600) {
+function showImage(src, width, height) {
   // ratio of images
   return ({
     src,
@@ -24,8 +24,7 @@ function getImages(callback, shuffle = false, TableName = 'Images') {
   };
 
   const region = 'us-west-2';
-  const Bucket = 'testing-uswest2';
-  const imgPrefix = `https://s3-${region}.amazonaws.com/${Bucket}/`;
+  let imgPrefix;
   const images = [];
   dbc.scan(params, (err, data) => {
     if (err) {
@@ -33,12 +32,12 @@ function getImages(callback, shuffle = false, TableName = 'Images') {
     } else {
       console.log(data);
       const items = shuffle ? shuffleArr(data.Items) : data.Items;
-      for (let i = 0; i < items.length; i += 1) {
-        const image = items[i];
+      items.forEach((image) => {
+        imgPrefix = `https://s3-${region}.amazonaws.com/${image.Bucket}/`;
         images.push(
           showImage(`${imgPrefix}${image.Key}`, image.width, image.height),
         );
-      }
+      });
     }
     callback(images);
   });
