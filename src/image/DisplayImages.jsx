@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Gallery from 'react-photo-gallery';
 
@@ -6,7 +7,7 @@ function DisplayImages(props) {
 }
 
 DisplayImages.propTypes = {
-  imageItems: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  imageItems: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default DisplayImages;

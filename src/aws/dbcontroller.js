@@ -1,7 +1,6 @@
 import AWS from 'aws-sdk';
 
 import { dbConfig } from './aws-config';
-const ddbcb = require('./dynamo-callbacks.js');
 
 /*
     This file constructs a DBController object in order to access a DynamoDB
@@ -13,31 +12,41 @@ const ddbcb = require('./dynamo-callbacks.js');
       delete, get, put, update
 */
 
-var DBController = function() {
-  AWS.config = dbConfig;
+AWS.config = dbConfig;
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-  this.dynamodb = new AWS.DynamoDB();
-  this.docClient = new AWS.DynamoDB.DocumentClient();
-}
+export default {
+  delete(params, callback) {
+    docClient.delete(params, callback);
+  },
 
-DBController.prototype.delete = function(params, callback) {
-  if (callback == null) callback = ddbcb.delete;
-  this.docClient.delete(params, callback);
-}
+  get(params, callback) {
+    docClient.get(params, callback);
+  },
 
-DBController.prototype.get = function(params, callback) {
-  if (callback == null) callback = ddbcb.get;
-  this.docClient.get(params, callback);
-}
+  getImage(params, callback) {
+    this.get(params, (err, data) => {
+      const image = data;
+      delete image.Item.BucketKey;
+      callback(err, image);
+    });
+  },
 
-DBController.prototype.put = function(params, callback) {
-  if (callback == null) callback = ddbcd.put;
-  this.docClient.put(params, callback);
-}
+  put(params, callback) {
+    docClient.put(params, callback);
+  },
 
-DBController.prototype.update = function(params, callback) {
-  if (callback == null) callback = ddbcd.update;
-  this.docClient.update(params, callback);
-}
+  putImage(image, callback) {
+    const params = image;
+    params.Item.BucketKey = `${params.Item.Bucket}|${params.Item.Key}`;
+    this.put(params, callback);
+  },
 
-module.exports = DBController;
+  scan(params, callback) {
+    docClient.scan(params, callback);
+  },
+
+  update(params, callback) {
+    docClient.update(params, callback);
+  },
+};
