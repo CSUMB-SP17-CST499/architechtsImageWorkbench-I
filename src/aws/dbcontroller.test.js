@@ -1,23 +1,19 @@
 import AWS from 'aws-sdk';
 
 import { dbConfig } from './aws-config';
-import DBController from './dbcontroller';
+import dbc from './dbcontroller';
 
 /*
-    Tests for the DBController class. "test" table is cleared and repopulated
+    Tests for the dbcontroller module. "test" table is cleared and repopulated
     each time the tests are run.
 */
 
-describe('DBController test suite', () => {
+describe('dbcontroller test suite', () => {
 
-  let dbc;
   let params;
 
   beforeAll(() => {
-    dbc = new DBController();
-
     AWS.config = dbConfig;
-
     const docClient = new AWS.DynamoDB.DocumentClient();
     const dels = require('../../json/pre/dels.json');
     const puts = require('../../json/pre/puts.json');
