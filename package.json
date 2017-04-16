@@ -6,9 +6,14 @@
     "aws-sdk": "^2.27.0",
     "image-size": "^0.5.1",
     "prop-types": "^15.5.6",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-images": "^0.5.2",
     "react-photo-gallery": "^5.3.0"
+  },
+  "peerDependencies": {
+    "react-dom": "^0.14 || ^15.0",
+    "react": "^0.14 || ^15.0"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",
