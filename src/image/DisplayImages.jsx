@@ -1,6 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import Gallery from 'react-photo-gallery';
-import Lightbox from 'react-images';
+import Gallery from 'react-grid-gallery';
+
+function createTag(value, title) {
+  return ({
+    value,
+    title,
+  });
+}
 
 class DisplayImages extends Component {
 
@@ -53,26 +59,23 @@ class DisplayImages extends Component {
     });
   }
 
-  renderGallery() {
-    return <Gallery photos={this.props.imageItems} onClickPhoto={this.openLightbox} />;
+  addValues() {
+    let i = 0;
+    for (i; i < this.props.imageItems.length; i += 1) {
+      const rowTags = [];
+      rowTags.push(createTag(
+        this.props.imageItems[i].labels.length,
+        this.props.imageItems[i].labels.length));
+      this.props.imageItems[i].tags = rowTags;
+      this.props.imageItems[i].thumbnail = this.props.imageItems[i].src;
+      this.props.imageItems[i].thumbnailWidth = this.props.imageItems[i].width;
+      this.props.imageItems[i].thumbnailHeight = this.props.imageItems[i].height;
+    }
   }
 
   render() {
-    return (
-      <div className="DisplayImages">
-        {this.renderGallery()}
-        <Lightbox
-          images={this.props.imageItems}
-          backdropClosesModal={this.state.backdropClosesModal}
-          onClose={this.closeLightbox}
-          onClickPrev={this.goToPrevious}
-          onClickNext={this.goToNext}
-          currentImage={this.state.currentImage}
-          isOpen={this.state.lightboxIsOpen}
-          width={1600}
-        />
-      </div>
-    );
+    this.addValues();
+    return (<Gallery images={this.props.imageItems} enableImageSelection={false} />);
   }
 }
 
