@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "algoliasearch": "^3.22.1",
     "aws-sdk": "^2.27.0",
     "eslint-config-airbnb": "^14.1.0",
     "image-size": "^0.5.1",
