@@ -59,3 +59,13 @@
   width: auto;
   height: auto;
 }
+.tagPreview{
+  margin-right: auto;
+  margin-left: auto;
+  padding: 5px;
+  max-width:400px;
+  max-height:250px;
+  width: auto;
+  height: auto;
+  margin-bottom:20px;
+}
