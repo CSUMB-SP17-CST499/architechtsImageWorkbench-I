@@ -1,11 +1,12 @@
 import dbc from '../../aws/dbcontroller';
 
-function showImage(src, width, height) {
+function showImage(src, width, height, labels) {
   // ratio of images
   return ({
     src,
     width,
     height,
+    labels,
   });
 }
 
@@ -35,7 +36,7 @@ function getImages(callback, shuffle = false, TableName = 'Images') {
       items.forEach((image) => {
         imgPrefix = `https://s3-${region}.amazonaws.com/${image.Bucket}/`;
         images.push(
-          showImage(`${imgPrefix}${image.Key}`, image.width, image.height),
+          showImage(`${imgPrefix}${image.Key}`, image.width, image.height, image.Labels),
         );
       });
     }
