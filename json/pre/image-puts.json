@@ -1,0 +1,27 @@
+{
+  "RequestItems": {
+    "test_images": [
+      {
+        "PutRequest": {
+          "Item": {
+            "BucketKey": "Bucket|Key.jpg",
+            "Bucket": "Bucket",
+            "Key": "Key.jpg",
+            "width": 640,
+            "height": 480,
+            "Labels": [
+              {
+                "Confidence": 66.6,
+                "Name": "Lucy"
+              },
+              {
+                "Confidence": 12.3,
+                "Name": "test label"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
