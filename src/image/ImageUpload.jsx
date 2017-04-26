@@ -10,7 +10,11 @@ import './ImageUpload.css';
 
 injectTapEventPlugin();
 
-const Bucket = 'testing-uswest2';
+const rekReader = new FileReader();
+const urlReader = new FileReader();
+
+let load1 = false;
+let load2 = false;
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -41,22 +45,37 @@ class ImageUpload extends React.Component {
     }, true);
   }
 
-  getTags() {
-    const params = {
-      Image: {
-        S3Object: {
-          Bucket,
-          Name: this.state.file.name,
+  handleSubmit(e) {
+    e.preventDefault();
+     // Image Engine full process
+     // commented out location.reload() for purpose of dislaying tags
+    if (load1 && load2) {
+      submit(this.state.file, this.imgWidth, this.imgHeight, () => {
+        // location.reload();
+        load1 = false;
+        load2 = false;
+      });
+    }
+  }
+
+  handleImageChange(e) {
+    e.preventDefault();
+    const file = e.target.files[0];
+
+    rekReader.onloadend = () => {
+      const params = {
+        Image: {
+          Bytes: rekReader.result,
         },
-      },
-      MinConfidence: 75,
-    };
-    const tagsImg = [];
-    return new Promise((fulfill, reject) => {
+      };
+
       rek.detectLabels(params, (err, data) => {
-        if (err) reject(err);
-        fulfill(data);
-        console.log(data.Labels);
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        const tagsImg = [];
         for (let i = 0; i < data.Labels.length; i += 1) {
           const labelName = data.Labels[i].Name;
           tagsImg.push({ key: i, label: labelName });
@@ -64,28 +83,14 @@ class ImageUpload extends React.Component {
         console.log(tagsImg);
         this.sendTags(tagsImg);
       });
-    });
-  }
 
-  handleSubmit(e) {
-    e.preventDefault();
-     // Image Engine full process
-     // commented out location.reload() for purpose of dislaying tags
-    this.getTags();
-    submit(this.state.file, this.imgWidth, this.imgHeight, () => {
-      // location.reload();
-    });
-  }
+      load1 = true;
+    };
 
-  handleImageChange(e) {
-    e.preventDefault();
-
-    const reader = new FileReader();
-    const file = e.target.files[0];
-    reader.onloadend = () => {
+    urlReader.onloadend = () => {
       this.setState({
         file,
-        imagePreviewUrl: reader.result,
+        imagePreviewUrl: urlReader.result,
       }, () => {
         const img = document.getElementById('prev');
         img.onload = () => {
@@ -93,8 +98,12 @@ class ImageUpload extends React.Component {
           this.imgHeight = img.height;
         };
       });
+
+      load2 = true;
     };
-    reader.readAsDataURL(file);
+
+    rekReader.readAsArrayBuffer(file);
+    urlReader.readAsDataURL(file);
   }
 
   sendTags(tagsImg) {
