@@ -100,6 +100,7 @@ describe('dbcontroller test suite', () => {
       });
     });
   });
+<<<<<<< HEAD
 
   test('dbcontroller puts an image in "test_images" table', done => {
     params = require('../../json/test/putImage.json');
