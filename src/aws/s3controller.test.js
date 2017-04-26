@@ -22,7 +22,7 @@ describe('s3controller test suite', () => {
   beforeAll(() => {
     const params = {
       Bucket,
-      Key: '8a9.jpg',
+      Key: '8a9.png',
     }
 
     return new Promise((fulfill, reject) => {
@@ -35,8 +35,8 @@ describe('s3controller test suite', () => {
 
   test('s3controller uploads an image to the "pdie-unit-test" bucket', done => {
     const ACL = 'public-read';
-    const haroldPath = path.join(__dirname, '../../img/test/8a9.jpg');
-    const Key = '8a9.jpg';
+    const haroldPath = path.join(__dirname, '../../img/test/8a9.png');
+    const Key = '8a9.png';
 
     let params = {
       Bucket,
@@ -51,16 +51,20 @@ describe('s3controller test suite', () => {
         ACL,
         Body: data,
       };
+      s3ForTest.getObject(params, (err, data) => {
+        expect(data).toBeNull();
 
-      s3.upload(params, (err, data) => {
-        expect(err).toBeNull();
-        params = {
-          Bucket,
-          Key,
-        };
-        s3ForTest.getObject(params, (err, data) => {
+        s3.upload(params, (err, data) => {
           expect(err).toBeNull();
-          done();
+          params = {
+            Bucket,
+            Key,
+          };
+
+          s3ForTest.getObject(params, (err, data) => {
+            expect(err).toBeNull();
+            done();
+          });
         });
       });
     });
