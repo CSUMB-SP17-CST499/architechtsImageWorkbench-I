@@ -1,0 +1,13 @@
+{
+  "RequestItems": {
+    "test_images": [
+      {
+        "DeleteRequest": {
+          "Key": {
+            "BucketKey": "Delete|Me.jpg"
+          }
+        }
+      }
+    ]
+  }
+}
