@@ -42,7 +42,7 @@ describe('dbcontroller test suite', () => {
     });
   });
 
-  test('DBController deletes a record from "test" table', done => {
+  test('dbcontroller deletes a record from "test" table', done => {
     params = require('../../json/test/del.json');
 
     dbc.get(params, (err, data) => {
@@ -62,7 +62,7 @@ describe('dbcontroller test suite', () => {
     });
   });
 
-  test('DBController gets a record from "test" table', done => {
+  test('dbcontroller gets a record from "test" table', done => {
     params = require('../../json/test/get.json');
 
     dbc.get(params, (err, data) => {
@@ -74,7 +74,7 @@ describe('dbcontroller test suite', () => {
     });
   });
 
-  test('DBController puts a record into "test" table', done => {
+  test('dbcontroller puts a record into "test" table', done => {
     params = require('../../json/test/put.json');
 
     const getParams = {
@@ -101,7 +101,7 @@ describe('dbcontroller test suite', () => {
     });
   });
 
-  test('DBController puts an image in "test_images" table', done => {
+  test('dbcontroller puts an image in "test_images" table', done => {
     params = require('../../json/test/putImage.json');
 
     const getParams = {
@@ -112,8 +112,7 @@ describe('dbcontroller test suite', () => {
     };
 
     const keyParts = getParams.Key.BucketKey.split('|');
-    expect(keyParts[0]).toBe(params.Item.Bucket);
-    expect(keyParts[1]).toBe(params.Item.Key);
+    expect(keyParts).toEqual(['Delete', 'Me.jpg']);
 
     dbc.get(getParams, (err, data) => {
       expect(data).toEqual({});
@@ -122,7 +121,6 @@ describe('dbcontroller test suite', () => {
         expect(err).toBeNull();
 
         dbc.get(getParams, (err, data) => {
-          // delete data.Item.BucketKey;
           expect(data.Item).toEqual(params.Item);
           done();
         });
@@ -130,7 +128,53 @@ describe('dbcontroller test suite', () => {
     });
   });
 
-  test('DBController updates a record in "test" table', done => {
+  test('dbcontroller scans the "test_images" table', done => {
+    const params = {
+      TableName: 'test_images',
+    };
+
+    dbc.scan(params, (err, data) => {
+      expect(data.Items[0]).toEqual({
+        BucketKey: 'Delete|Me.jpg',
+        Bucket: 'Delete',
+        Key: 'Me.jpg',
+        width: 1920,
+        height: 1080,
+        Labels: [
+          {
+            Confidence: 3.14,
+            Name: 'Pi',
+          },
+          {
+            Confidence: 0.0,
+            Name: 'nothing',
+          }
+        ]
+      });
+
+      expect(data.Items[1]).toEqual({
+        BucketKey: 'Bucket|Key.jpg',
+        Bucket: 'Bucket',
+        Key: 'Key.jpg',
+        width: 640,
+        height: 480,
+        Labels: [
+          {
+            Confidence: 66.6,
+            Name: 'Lucy',
+          },
+          {
+            Confidence: 12.3,
+            Name: 'test label',
+          }
+        ]
+      });
+
+      done();
+    });
+  });
+
+  test('dbcontroller updates a record in "test" table', done => {
     params = require('../../json/test/upd.json');
     var get_params = {
       TableName: 'test',
