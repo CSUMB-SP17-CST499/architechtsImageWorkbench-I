@@ -65,7 +65,7 @@ class ImageUpload extends React.Component {
     rekReader.onloadend = () => {
       const params = {
         Image: {
-          Bytes: rekReader.result,
+          Bytes: file,
         },
       };
 
