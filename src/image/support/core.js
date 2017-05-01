@@ -60,12 +60,12 @@ function upload(file, callback, ACL = 'public-read') {
   });
 }
 
-function submit(file, width, height, callback) {
+function submit(file, tags, width, height, callback) {
   const Key = file.name;
 
   upload(file)
-    .then(() => label(Key))
-    .then(data => store(Key, data.Labels, width, height))
+    // .then(() => label(Key))
+    .then(() => store(Key, tags, width, height))
     .then(() => callback())
     .catch(err => console.error(err));
 }

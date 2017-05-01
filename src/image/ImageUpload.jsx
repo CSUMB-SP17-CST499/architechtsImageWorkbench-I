@@ -1,4 +1,4 @@
-/* eslint-env browser, global FileReader */
+/* eslint-env browser */
 import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import Chip from 'material-ui/Chip';
@@ -10,9 +10,8 @@ import './ImageUpload.css';
 
 injectTapEventPlugin();
 
-const rekReader = new FileReader();
-const urlReader = new FileReader();
-
+let rekReader;
+let urlReader;
 let load1 = false;
 let load2 = false;
 
@@ -60,13 +59,16 @@ class ImageUpload extends React.Component {
 
   handleImageChange(e) {
     e.preventDefault();
+    rekReader = new FileReader();
+    urlReader = new FileReader();
     const file = e.target.files[0];
 
     rekReader.onloadend = () => {
       const params = {
         Image: {
-          Bytes: file,
+          Bytes: rekReader.result,
         },
+        MinConfidence: 75,
       };
 
       rek.detectLabels(params, (err, data) => {
@@ -109,18 +111,17 @@ class ImageUpload extends React.Component {
   sendTags(tagsImg) {
     this.setState({ tags: tagsImg });
   }
+
   saveImages(images) {
     this.setState({ images });
   }
+
   handleRequestDelete(key) {
-    console.log(key);
-    this.tags = this.state.tags;
-    const chipToDelete = this.tags.map(chip => chip.key).indexOf(key);
-    this.tags.splice(chipToDelete, 1);
-    this.setState({ tags: this.tags });
-    // update file tags
-    submit(this.state.file, this.imgWidth, this.imgHeight, () => {
-    });
+    const tags = this.state.tags;
+    console.log(tags);
+    tags.splice(key, 1);
+    this.setState({ tags });
+    console.log(this.state.tags);
   }
 
   renderChip(data) {
