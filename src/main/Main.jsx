@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from '../header/Header';
 import ImageUpload from '../image/ImageUpload';
-import logo from '../../img/pan-logo.png';
+import logo from '../../public/panafold.jpg';
 
 import './Main.css';
 
