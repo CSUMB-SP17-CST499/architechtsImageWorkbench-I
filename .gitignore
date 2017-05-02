@@ -21,4 +21,7 @@ src/json/
 json/credentials.json
 
 #Webpack Bundle
-public/js/bundle.js
+public/bundle.js
+
+#Production zip
+pdie.zip

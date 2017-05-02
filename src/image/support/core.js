@@ -2,18 +2,15 @@ import dbc from '../../aws/dbcontroller';
 import rek from '../../aws/rekcontroller';
 import s3 from '../../aws/s3controller';
 
-const Bucket = 'testing-uswest2';
+const MinConfidence = 75;
 const TableName = 'Images';
 
-function label(Key) {
+const labelFile = (Bytes) => {
   const params = {
     Image: {
-      S3Object: {
-        Bucket,
-        Name: Key,
-      },
+      Bytes,
     },
-    MinConfidence: 75,
+    MinConfidence,
   };
 
   return new Promise((fulfill, reject) => {
@@ -22,7 +19,28 @@ function label(Key) {
       fulfill(data);
     });
   });
-}
+};
+
+const labelS3 = (Bucket, Name) => {
+  const params = {
+    Image: {
+      S3Object: {
+        Bucket,
+        Name,
+      },
+    },
+    MinConfidence,
+  };
+
+  return new Promise((fulfill, reject) => {
+    rek.detectLabels(params, (err, data) => {
+      if (err) reject(err);
+      fulfill(data);
+    });
+  });
+};
+
+const Bucket = 'testing-uswest2';
 
 function store(Key, Labels, width, height) {
   const params = {
@@ -60,14 +78,16 @@ function upload(file, callback, ACL = 'public-read') {
   });
 }
 
-function submit(file, tags, width, height, callback) {
+function submit(file, labels, width, height, callback) {
   const Key = file.name;
+
+  const imgPrefix = 'https://s3-us-west-2.amazonaws.com/testing-uswest2/';
 
   upload(file)
     // .then(() => label(Key))
-    .then(() => store(Key, tags, width, height))
-    .then(() => callback())
+    .then(() => store(Key, labels, width, height))
+    .then(() => callback({ src: `${imgPrefix}${Key}`, width, height, labels }))
     .catch(err => console.error(err));
 }
 
-export { label, store, submit, upload };
+export { labelFile, labelS3, store, submit, upload };

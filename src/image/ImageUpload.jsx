@@ -1,19 +1,21 @@
-/* eslint-env browser */
+/* eslint-env browser, global FileReader */
+import Chip from 'material-ui/Chip';
 import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Chip from 'material-ui/Chip';
+
 import { getImages } from './support/retriever';
-import { submit } from './support/core';
+import { labelFile, submit } from './support/core';
 import DisplayImages from './DisplayImages';
 import rek from '../aws/rekcontroller';
 import './ImageUpload.css';
+import TagDisplay from './TagDisplay';
 
 injectTapEventPlugin();
 
-let rekReader;
-let urlReader;
+const Bucket = 'testing-uswest2';
+
 let load1 = false;
-let load2 = false;
+let load2 = true;
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -22,16 +24,15 @@ class ImageUpload extends React.Component {
       imagePreviewUrl: '',
       images: [],
       tags: [],
+      labels: [],
     };
     this.styles = {
-      chip: {
-        margin: 4,
-      },
       wrapper: {
         display: 'flex',
         flexWrap: 'wrap',
       },
     };
+    this.deleteChip = this.deleteChip.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -44,68 +45,88 @@ class ImageUpload extends React.Component {
     }, true);
   }
 
+  getTags() {
+    const params = {
+      Image: {
+        S3Object: {
+          Bucket,
+          Name: this.state.file.name,
+        },
+      },
+      MinConfidence: 75,
+    };
+    const tagsImg = [];
+    return new Promise((fulfill, reject) => {
+      rek.detectLabels(params, (err, data) => {
+        if (err) reject(err);
+        fulfill(data);
+        for (let i = 0; i < data.Labels.length; i += 1) {
+          const labelName = data.Labels[i].Name;
+          tagsImg.push({ key: i, label: labelName });
+        }
+        this.sendTags(tagsImg);
+      });
+    });
+  }
+
+  deleteChip(Name) {
+    const labels = this.state.labels.filter(label => (label.Name !== Name));
+    this.setState({
+      labels,
+    });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
      // Image Engine full process
      // commented out location.reload() for purpose of dislaying tags
     if (load1 && load2) {
-      submit(this.state.file, this.imgWidth, this.imgHeight, () => {
-        // location.reload();
-        load1 = false;
-        load2 = false;
-      });
+      submit(
+        this.state.file,
+        this.state.labels,
+        this.imgWidth,
+        this.imgHeight,
+        (image) => {
+          this.setState({
+            images: [image, ...this.state.images],
+          });
+        },
+      );
     }
   }
 
   handleImageChange(e) {
     e.preventDefault();
-    rekReader = new FileReader();
-    urlReader = new FileReader();
+
+    const reader = new FileReader();
+    const reader2 = new FileReader();
+
     const file = e.target.files[0];
-
-    rekReader.onloadend = () => {
-      const params = {
-        Image: {
-          Bytes: rekReader.result,
-        },
-        MinConfidence: 75,
-      };
-
-      rek.detectLabels(params, (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-
-        const tagsImg = [];
-        for (let i = 0; i < data.Labels.length; i += 1) {
-          const labelName = data.Labels[i].Name;
-          tagsImg.push({ key: i, label: labelName });
-        }
-        console.log(tagsImg);
-        this.sendTags(tagsImg);
-      });
-
-      load1 = true;
-    };
-
-    urlReader.onloadend = () => {
+    reader.onloadend = () => {
       this.setState({
         file,
-        imagePreviewUrl: urlReader.result,
+        imagePreviewUrl: reader.result,
       }, () => {
         const img = document.getElementById('prev');
         img.onload = () => {
           this.imgWidth = img.width;
           this.imgHeight = img.height;
+          load1 = true;
         };
       });
-
-      load2 = true;
     };
 
-    rekReader.readAsArrayBuffer(file);
-    urlReader.readAsDataURL(file);
+    reader2.onloadend = () => {
+      labelFile(reader2.result).then((data) => {
+        this.setState({
+          labels: data.Labels,
+        });
+        load2 = true;
+      });
+    };
+
+    reader.readAsDataURL(file);
+    reader2.readAsArrayBuffer(file);
   }
 
   sendTags(tagsImg) {
@@ -117,16 +138,16 @@ class ImageUpload extends React.Component {
   }
 
   handleRequestDelete(key) {
-    const tags = this.state.tags;
-    console.log(tags);
-    tags.splice(key, 1);
-    this.setState({ tags });
-    console.log(this.state.tags);
+    this.tags = this.state.tags;
+    const chipToDelete = this.tags.map(chip => chip.key).indexOf(key);
+    this.tags.splice(chipToDelete, 1);
+    this.setState({ tags: this.tags });
+    // update file tags
+    submit(this.state.file, this.imgWidth, this.imgHeight, () => {
+    });
   }
 
   renderChip(data) {
-    console.log(data.key);
-    console.log(data.label);
     return (
       <Chip
         key={data.key}
@@ -159,7 +180,7 @@ class ImageUpload extends React.Component {
         </form>
 
         <div className="tagPreview" style={this.styles.wrapper}>
-          {this.state.tags.map(this.renderChip, this)}
+          <TagDisplay labels={this.state.labels} deleteChip={this.deleteChip} />
         </div>
         <div className="imgPreview">
           {$imagePreview}

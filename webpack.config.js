@@ -5,7 +5,7 @@ var APP_DIR = path.resolve(__dirname, 'src');
 var BUILD_DIR = path.resolve(__dirname, 'public');
 
 var config = {
-  enrty: APP_DIR + '/index.jsx';
+  enrty: APP_DIR + '/index.jsx',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -18,6 +18,13 @@ var config = {
         use: [
           'babel-loader',
           'eslint-loader'
+        ]
+      },
+      {
+        test: /\.css$/,
+        include: APP_DIR,
+        use: [
+          'css-loader'
         ]
       }
     ]

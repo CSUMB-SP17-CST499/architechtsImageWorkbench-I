@@ -31,7 +31,6 @@ function getImages(callback, shuffle = false, TableName = 'Images') {
     if (err) {
       console.error(err, err.stack);
     } else {
-      console.log(data);
       const items = shuffle ? shuffleArr(data.Items) : data.Items;
       items.forEach((image) => {
         imgPrefix = `https://s3-${region}.amazonaws.com/${image.Bucket}/`;
