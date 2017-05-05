@@ -3,14 +3,9 @@ import path from 'path';
 import React from 'react';
 
 const app = express();
-const publicPath = path.join(__dirname, '..', 'public');
-
-// ejs templates
-app.set('view engine', 'ejs');
-app.set('views', publicPath);
 
 // define the folder that will be used for static assets
-app.use('/', express.static(publicPath));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // start the server
 const env = process.env.NODE_ENV || 'production';

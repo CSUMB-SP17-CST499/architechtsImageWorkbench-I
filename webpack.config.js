@@ -5,13 +5,13 @@ var APP_DIR = path.resolve(__dirname, 'src');
 var BUILD_DIR = path.resolve(__dirname, 'public');
 
 var config = {
-  enrty: APP_DIR + '/index.jsx',
+  entry: APP_DIR + '/index.jsx',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.(js|jsx)$/,
         include: APP_DIR,
@@ -24,10 +24,21 @@ var config = {
         test: /\.css$/,
         include: APP_DIR,
         use: [
+          'style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.jpg$/,
+        loader: 'file-loader',
+        query: {
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       }
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.jsx']
   }
 };
 
