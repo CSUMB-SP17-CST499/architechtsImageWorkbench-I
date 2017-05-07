@@ -2,11 +2,13 @@
 import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import Chip from 'material-ui/Chip';
+import { InstantSearch, Hits, SearchBox } from 'react-instantsearch/dom';
 import { getImages } from './support/retriever';
 import { submit } from './support/core';
 import DisplayImages from './DisplayImages';
 import rek from '../aws/rekcontroller';
 import './ImageUpload.css';
+
 
 injectTapEventPlugin();
 
@@ -100,9 +102,11 @@ class ImageUpload extends React.Component {
   sendTags(tagsImg) {
     this.setState({ tags: tagsImg });
   }
+
   saveImages(images) {
     this.setState({ images });
   }
+
   handleRequestDelete(key) {
     console.log(key);
     this.tags = this.state.tags;
@@ -127,6 +131,7 @@ class ImageUpload extends React.Component {
       </Chip>
     );
   }
+
   render() {
     const { imagePreviewUrl } = this.state;
     const $imagePreview = imagePreviewUrl ?
@@ -147,6 +152,16 @@ class ImageUpload extends React.Component {
             Upload Image
           </button>
         </form>
+        <InstantSearch
+          appId="VPB3MY0NLI"
+          apiKey="33a95484a281ff7b3281c73bf0be4417"
+          indexName="img_NAME"
+        >
+          <div>
+            <SearchBox />
+            <Hits />
+          </div>
+        </InstantSearch>
 
         <div className="tagPreview" style={this.styles.wrapper}>
           {this.state.tags.map(this.renderChip, this)}
@@ -156,6 +171,7 @@ class ImageUpload extends React.Component {
         </div>
         <DisplayImages imageItems={this.state.images} />
       </div>
+
     );
   }
 }
