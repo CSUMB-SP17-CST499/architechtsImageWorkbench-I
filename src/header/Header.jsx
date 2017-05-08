@@ -3,14 +3,12 @@ import React from 'react';
 
 import './Header.css';
 
-function Header(props) {
-  return (
-    <div className="header">
-      <img src={props.logo} className="logo" alt="logo" />
-      <h2>{props.text}</h2>
-    </div>
-  );
-}
+const Header = ({ logo, text }) => (
+  <div className="header">
+    <img src={logo} className="logo" alt="logo" />
+    <h2>{text}</h2>
+  </div>
+);
 
 Header.propTypes = {
   logo: PropTypes.string.isRequired,

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Gallery from 'react-grid-gallery';
 
 function createTag(value, title) {
@@ -14,7 +15,7 @@ class DisplayImages extends Component {
     super();
 
     this.state = {
-      photos: null,
+      photos: [],
       lightboxIsOpen: false,
       currentImage: 0,
       backdropClosesModal: true,
@@ -60,8 +61,7 @@ class DisplayImages extends Component {
   }
 
   addValues() {
-    let i = 0;
-    for (i; i < this.props.imageItems.length; i += 1) {
+    for (let i = 0; i < this.props.imageItems.length; i += 1) {
       const rowTags = [];
       rowTags.push(createTag(
         this.props.imageItems[i].labels.length,
@@ -74,8 +74,15 @@ class DisplayImages extends Component {
   }
 
   render() {
-    this.addValues();
-    return (<Gallery images={this.props.imageItems} enableImageSelection={false} />);
+    // this.addValues();
+    const imageItems = [];
+    this.props.imageItems.forEach((imageItem) => {
+      const { src, labels, ...rest } = imageItem;
+      rest.thumbnail = src;
+      imageItems.push(rest);
+    });
+    console.log('imageitems', this.props.imageItems[0]);
+    return <Gallery images={imageItems} enableImageSelection={false} />;
   }
 }
 
