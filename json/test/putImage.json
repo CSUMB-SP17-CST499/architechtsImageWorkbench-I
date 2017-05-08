@@ -1,0 +1,19 @@
+{
+  "TableName": "test_images",
+  "Item": {
+    "Bucket": "Delete",
+    "Key": "Me.jpg",
+    "width": 1920,
+    "height": 1080,
+    "Labels": [
+      {
+        "Confidence": 3.14,
+        "Name": "Pi"
+      },
+      {
+        "Confidence": 0.0,
+        "Name": "nothing"
+      }
+    ]
+  }
+}

@@ -24,20 +24,12 @@ export default {
     docClient.get(params, callback);
   },
 
-  getImage(params, callback) {
-    this.get(params, (err, data) => {
-      const image = data;
-      delete image.Item.BucketKey;
-      callback(err, image);
-    });
-  },
-
   put(params, callback) {
     docClient.put(params, callback);
   },
 
   putImage(image, callback) {
-    const params = image;
+    const { ...params } = image;
     params.Item.BucketKey = `${params.Item.Bucket}|${params.Item.Key}`;
     this.put(params, callback);
   },
