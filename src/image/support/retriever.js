@@ -19,13 +19,16 @@ function shuffleArr(a) {
   return b;
 }
 
-function getImages(callback, shuffle = false, TableName = 'Images') {
+function getImages(
+  callback,
+  shuffle = false,
+  TableName = 'Images',
+  region = 'us-west-2',
+) {
   const params = {
     TableName,
   };
 
-  const region = 'us-west-2';
-  let imgPrefix;
   const images = [];
   dbc.scan(params, (err, data) => {
     if (err) {
@@ -33,10 +36,16 @@ function getImages(callback, shuffle = false, TableName = 'Images') {
     } else {
       const items = shuffle ? shuffleArr(data.Items) : data.Items;
       items.forEach((image) => {
-        imgPrefix = `https://s3-${region}.amazonaws.com/${image.Bucket}/`;
-        images.push(
-          showImage(`${imgPrefix}${image.Key}`, image.width, image.height, image.Labels),
-        );
+        const { Bucket, Key, width, height } = image;
+        const src = `https://s3-${region}.amazonaws.com/${Bucket}/${Key}`;
+        images.push({
+          src,
+          width,
+          height,
+          thumbnail: src,
+          thumbnailWidth: width,
+          thumbnailHeight: height,
+        });
       });
     }
     callback(images);

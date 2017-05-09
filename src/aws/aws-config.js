@@ -1,4 +1,4 @@
-/* eslint global-require: "warn" */
+/* eslint global-require: "off" */
 import AWS from 'aws-sdk';
 
 const dbRegion = 'us-west-1';

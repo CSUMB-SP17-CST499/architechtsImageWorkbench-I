@@ -1,0 +1,6 @@
+.chip-display {
+  display: inline-block;
+  flex-grow: 3;
+  margin: auto;
+  text-align: center;
+}

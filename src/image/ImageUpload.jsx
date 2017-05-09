@@ -1,11 +1,12 @@
 /* eslint-env browser, global FileReader */
 import Chip from 'material-ui/Chip';
+import PropTypes from 'prop-types';
 import React from 'react';
+import Gallery from 'react-grid-gallery';
+import { connect } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import { getImages } from './support/retriever';
 import { labelFile, submit } from './support/core';
-import DisplayImages from './DisplayImages';
 import rek from '../aws/rekcontroller';
 import './ImageUpload.css';
 import TagDisplay from './TagDisplay';
@@ -22,7 +23,6 @@ class ImageUpload extends React.Component {
     super(props);
     this.state = {
       imagePreviewUrl: '',
-      images: [],
       tags: [],
       labels: [],
     };
@@ -35,14 +35,6 @@ class ImageUpload extends React.Component {
     this.deleteChip = this.deleteChip.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    getImages((images) => {
-      this.setState({
-        images,
-      });
-    }, true);
   }
 
   getTags() {
@@ -158,14 +150,8 @@ class ImageUpload extends React.Component {
       </Chip>
     );
   }
+
   render() {
-    const { imagePreviewUrl } = this.state;
-    const $imagePreview = imagePreviewUrl ?
-
-
-      (<img className="imgUrl" id="prev" alt="imgUrl" src={imagePreviewUrl} />) :
-       'Please select an image for preview';
-
     return (
       <div className="previewComponent">
         <form onSubmit={this.handleSubmit}>
@@ -178,18 +164,34 @@ class ImageUpload extends React.Component {
             Upload Image
           </button>
         </form>
-
         <div className="tagPreview" style={this.styles.wrapper}>
           <TagDisplay labels={this.state.labels} deleteChip={this.deleteChip} />
         </div>
         <div className="imgPreview">
-          {$imagePreview}
+          <img
+            className="imgUrl"
+            id="prev"
+            alt="Please select an item for preview"
+            src={this.state.imagePreviewUrl}
+          />
         </div>
-        <DisplayImages imageItems={this.state.images} />
+        <Gallery
+          images={this.props.images}
+          enableImageSelection={false}
+          backdropClosesModal
+          enableKeyboardInput
+        />
       </div>
     );
   }
 }
 
+ImageUpload.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
-export default ImageUpload;
+const ImageUploadRedux = connect(
+  state => ({ images: state.images }),
+)(ImageUpload);
+
+export default ImageUploadRedux;
