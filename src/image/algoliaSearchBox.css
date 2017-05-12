@@ -1,0 +1,34 @@
+
+.box {
+  height: 25px;
+}
+
+.ais-SearchBox__reset{
+  width: 10%;
+  height: auto;
+  } svg,
+.ais-SearchBox__button svg{
+  fill: red;
+  width: 100%;
+  height: 19px;
+}
+
+.ais-SearchBox__submit{
+  width: 10%;
+  height: auto;
+
+  } svg,
+.ais-SearchBox__button svg{
+  fill: #0277bd;
+  width: 50%;
+  height: 22px;
+}
+.ais-SearchBox__wrapper {
+  height: 40px;
+}
+.ais-SearchBox__input {
+  width: 140px;
+  height: 26px;
+  border: 1px solid #0277bd;
+  margin: 1px;
+}
