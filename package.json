@@ -13,6 +13,7 @@
     "react-grid-gallery": "^0.3.2",
     "react-images": "^0.5.2",
     "react-instantsearch": "^3.3.2",
+    "react-instantsearch-theme-algolia": "^4.0.0-beta.6",
     "react-photo-gallery": "^5.3.0",
     "react-tap-event-plugin": "^2.0.1"
   },

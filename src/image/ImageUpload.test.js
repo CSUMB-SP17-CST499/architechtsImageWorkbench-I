@@ -30,11 +30,11 @@ describe('<ImageUpload /> shallow rendering', () => {
   });
 
   test('ImageUpload has three children', () => {
-    expect(imageUpload.children().length).toBe(4);
+    expect(imageUpload.children().length).toBe(5);
   });
 
   test('ImageUpload has one div child', () => {
-    expect(imageUpload.children().find('div').length).toBe(2);
+    expect(imageUpload.children().find('div').length).toBe(3);
   });
 
   test('ImageUpload has one form cihld', () => {
