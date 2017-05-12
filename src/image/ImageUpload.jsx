@@ -8,7 +8,7 @@ import { submit } from './support/core';
 import DisplayImages from './DisplayImages';
 import rek from '../aws/rekcontroller';
 import './ImageUpload.css';
-
+import './algoliaSearchBox.css';
 
 injectTapEventPlugin();
 
