@@ -1,6 +1,8 @@
 .chip-display {
-  display: inline-block;
-  flex-grow: 3;
-  margin: auto;
-  text-align: center;
+  height: 20vh;
+  max-height: 40vh;
+  margin: 0 auto;
+  overflow: scroll;
+  padding: 5px;
+  vertical-align: center;
 }

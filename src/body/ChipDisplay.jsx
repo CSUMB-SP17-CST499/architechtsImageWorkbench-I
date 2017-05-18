@@ -9,16 +9,26 @@ import './ChipDisplay.css';
 injectTapEventPlugin();
 
 const styles = {
-  chip: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: 'auto',
-  },
+  display: 'inline-block',
+  flexWrap: 'wrap',
+  margin: 'auto',
 };
 
-const ChipDisplay = ({ previewLabels }) => {
+const stylesDelete = {
+  ...styles,
+  backgroundColor: '#ff6666',
+};
+
+const ChipDisplay = ({ deleteLabel, previewLabels }) => {
   const chips = previewLabels.map(label => (
-    <Chip className="chip" key={label} style={styles.chip}>{label}</Chip>
+    <Chip
+      className="chip"
+      key={label.label}
+      onTouchTap={() => deleteLabel(label.label)}
+      style={label.delete ? stylesDelete : styles}
+    >
+      {label.label}
+    </Chip>
   ));
 
   return (
@@ -29,7 +39,8 @@ const ChipDisplay = ({ previewLabels }) => {
 };
 
 ChipDisplay.propTypes = {
-  previewLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  deleteLabel: PropTypes.func.isRequired,
+  previewLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const ChipDisplayRedux = connect(
@@ -38,7 +49,7 @@ const ChipDisplayRedux = connect(
     deleteLabel: (label) => {
       dispatch({
         label,
-        type: 'DELETE_LABEL',
+        type: 'TOGGLE_DELETE',
       });
     },
   }),
