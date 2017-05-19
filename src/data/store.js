@@ -11,30 +11,41 @@ const canUpload = (state = false, action) => {
 };
 
 const image = (state = {
-  file: {},
   name: '',
   width: 0,
   height: 0,
 }, action) => {
   switch (action.type) {
-    case 'SET_IMAGE_HEIGHT':
+    case 'SET_IMAGE_HEIGHT': {
+      console.log(action.height);
+      const props = {
+        ...state,
+        height: action.height,
+      };
+      console.log(props);
       return {
         ...state,
         height: action.height,
       };
+    }
 
-    case 'SET_IMAGE_WIDTH':
-      return {
+    case 'SET_IMAGE_WIDTH': {
+      console.log(action.width);
+      const props = {
         width: action.width,
         ...state,
       };
-
-    case 'SET_IMAGE_FILE': {
-      const file = action.file;
+      console.log(props);
       return {
-        file,
-        name: file.name,
         ...state,
+        width: action.width,
+      };
+    }
+
+    case 'SET_IMAGE_FILE_NAME': {
+      return {
+        ...state,
+        name: action.name,
       };
     }
 

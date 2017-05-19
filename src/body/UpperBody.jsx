@@ -15,12 +15,15 @@ import './UpperBody.css';
 const byteReader = new FileReader();
 const urlReader = new FileReader();
 
+let fileObj = {};
+
 const UpperBody = ({
+  canUpload,
   clearSearch,
   previewImageUrl,
   searchOpen,
   searchQuery,
-  setImageFile,
+  setFileName,
   setImageHeight,
   setImageWidth,
   setPreviewImageUrl,
@@ -43,30 +46,23 @@ const UpperBody = ({
       </IconButton>
     ) : '';
 
-  const imagePreview = previewImageUrl ?
-    (
-      <img
-        onLoad={() => {
-          setImageWidth(this.width);
-          setImageHeight(this.height);
-        }}
-        src={previewImageUrl} alt="preview" id="preview-img"
-      />
-    ) :
-    'Please select an image to preview';
-
-/*
   const img = document.getElementById('preview-img');
-  img.onload = () => {
-    setImageWidth(img.width);
-    setImageHeight(img.height);
-  };
-*/
+  if (img) {
+    img.onload = () => {
+      console.log(img.width, img.height);
+      console.log(canUpload);
+      setImageWidth(img.width);
+      setImageHeight(img.height);
+    };
+  }
+
   const onImageChange = (e) => {
     e.preventDefault();
     setUpload(false);
     const file = e.target.files[0];
-    setImageFile(file);
+    fileObj = file;
+    console.log(fileObj);
+    setFileName(file);
 
     byteReader.onloadend = () => {
       labelFile(byteReader.result).then(({ Labels }) => {
@@ -104,7 +100,15 @@ const UpperBody = ({
     whiteSpace: 'nowrap',
   };
 
-  console.log(searchQuery);
+  const textStyle1 = {
+    display: 'none',
+  };
+
+  const textStyle2 = {
+    display: 'block',
+  };
+
+  // console.log(searchQuery);
 
   return (
     <div className="body-upper">
@@ -117,7 +121,17 @@ const UpperBody = ({
             id="preview-upload"
             onChange={onImageChange}
           />
-          {imagePreview}
+          <span
+            id="preview-text"
+            style={previewImageUrl ? textStyle1 : textStyle2}
+          >
+            {'Please select an image to preview'}
+          </span>
+          <img
+            src={previewImageUrl}
+            alt=""
+            id="preview-img"
+          />
         </label>
       </div>
       <div className="body-upper-right">
@@ -139,7 +153,7 @@ const UpperBody = ({
         <div className="chip-div">
           <ChipDisplay />
           <br />
-          <UploadButton />
+          <UploadButton file={fileObj} />
         </div>
       </div>
     </div>
@@ -147,11 +161,12 @@ const UpperBody = ({
 };
 
 UpperBody.propTypes = {
+  canUpload: PropTypes.bool.isRequired,
   clearSearch: PropTypes.func.isRequired,
   previewImageUrl: PropTypes.string.isRequired,
   searchOpen: PropTypes.bool.isRequired,
   searchQuery: PropTypes.string.isRequired,
-  setImageFile: PropTypes.func.isRequired,
+  setFileName: PropTypes.func.isRequired,
   setImageHeight: PropTypes.func.isRequired,
   setImageWidth: PropTypes.func.isRequired,
   setPreviewImageUrl: PropTypes.func.isRequired,
@@ -163,6 +178,7 @@ UpperBody.propTypes = {
 
 const UpperBodyRedux = connect(
   state => ({
+    canUpload: state.canUpload,
     previewImageUrl: state.previewImageUrl,
     searchOpen: state.searchOpen,
     searchQuery: state.searchQuery,
@@ -174,10 +190,10 @@ const UpperBodyRedux = connect(
       });
     },
 
-    setImageFile: (file) => {
+    setFileName: (file) => {
       dispatch({
-        file,
-        type: 'SET_IMAGE_FILE',
+        name: file.name,
+        type: 'SET_IMAGE_FILE_NAME',
       });
     },
 
@@ -191,7 +207,7 @@ const UpperBodyRedux = connect(
     setImageWidth: (width) => {
       dispatch({
         width,
-        type: 'SET_IMAGE_HEIGHT',
+        type: 'SET_IMAGE_WIDTH',
       });
     },
 

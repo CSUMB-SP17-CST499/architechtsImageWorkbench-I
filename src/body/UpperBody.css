@@ -20,13 +20,13 @@
   display: inline-block;
   margin-left: 1vw;
   text-align: left;
-  max-width: 20vw;
+  max-width: 30vw;
   vertical-align: middle;
 }
 
 .body-upper-spacer {
   display: inline-block;
-  min-width: 10vw;
+  min-width: 5vw;
   text-align: left;
   vertical-align: top;
 }
@@ -45,6 +45,10 @@
   max-width: 50vw;
 }
 
+#preview-text {
+  display: none;
+}
+
 #preview-upload {
   display: none;
   opacity: 1;
@@ -56,7 +60,6 @@
   display: block;
   height: 48px;
   max-height: 48px;
-  overflow: show;
 }
 
 #upload-label {
