@@ -20,6 +20,9 @@ const UpperBody = ({
   previewImageUrl,
   searchOpen,
   searchQuery,
+  setImageFile,
+  setImageHeight,
+  setImageWidth,
   setPreviewImageUrl,
   setPreviewLabels,
   setQuery,
@@ -41,15 +44,31 @@ const UpperBody = ({
     ) : '';
 
   const imagePreview = previewImageUrl ?
-    <img src={previewImageUrl} alt="preview" id="preview-img" /> :
+    (
+      <img
+        onLoad={() => {
+          setImageWidth(this.width);
+          setImageHeight(this.height);
+        }}
+        src={previewImageUrl} alt="preview" id="preview-img"
+      />
+    ) :
     'Please select an image to preview';
 
+/*
+  const img = document.getElementById('preview-img');
+  img.onload = () => {
+    setImageWidth(img.width);
+    setImageHeight(img.height);
+  };
+*/
   const onImageChange = (e) => {
     e.preventDefault();
+    setUpload(false);
     const file = e.target.files[0];
+    setImageFile(file);
 
     byteReader.onloadend = () => {
-      setUpload(false);
       labelFile(byteReader.result).then(({ Labels }) => {
         const labels = Labels.map(Label => (Label.Name));
         setPreviewLabels(labels);
@@ -82,6 +101,7 @@ const UpperBody = ({
     marginLeft: '4px',
     marginRight: 'e4px',
     verticalAlign: 'top',
+    whiteSpace: 'nowrap',
   };
 
   console.log(searchQuery);
@@ -107,20 +127,20 @@ const UpperBody = ({
             onChange={e => setQuery(e.target.value)}
             value={searchQuery}
           />
-          <IconButton
-            style={{ display: 'inline-block' }}
-            onClick={onSearchClick}
-          >
-            <ActionSearch style={{ display: 'inline-block' }} />
-          </IconButton>
+          <div className="buttons">
+            <IconButton
+              onClick={onSearchClick}
+            >
+              <ActionSearch style={{ display: 'inline-block' }} />
+            </IconButton>
+            {clearButton}
+          </div>
         </div>
         <div className="chip-div">
           <ChipDisplay />
+          <br />
           <UploadButton />
         </div>
-      </div>
-      <div className="body-upper-spacer">
-        {clearButton}
       </div>
     </div>
   );
@@ -131,6 +151,9 @@ UpperBody.propTypes = {
   previewImageUrl: PropTypes.string.isRequired,
   searchOpen: PropTypes.bool.isRequired,
   searchQuery: PropTypes.string.isRequired,
+  setImageFile: PropTypes.func.isRequired,
+  setImageHeight: PropTypes.func.isRequired,
+  setImageWidth: PropTypes.func.isRequired,
   setPreviewImageUrl: PropTypes.func.isRequired,
   setPreviewLabels: PropTypes.func.isRequired,
   setQuery: PropTypes.func.isRequired,
@@ -148,6 +171,27 @@ const UpperBodyRedux = connect(
     clearSearch: () => {
       dispatch({
         type: 'CLEAR_SEARCH_QUERY',
+      });
+    },
+
+    setImageFile: (file) => {
+      dispatch({
+        file,
+        type: 'SET_IMAGE_FILE',
+      });
+    },
+
+    setImageHeight: (height) => {
+      dispatch({
+        height,
+        type: 'SET_IMAGE_HEIGHT',
+      });
+    },
+
+    setImageWidth: (width) => {
+      dispatch({
+        width,
+        type: 'SET_IMAGE_HEIGHT',
       });
     },
 

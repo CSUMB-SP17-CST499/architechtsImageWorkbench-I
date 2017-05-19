@@ -10,8 +10,44 @@ const canUpload = (state = false, action) => {
   }
 };
 
+const image = (state = {
+  file: {},
+  name: '',
+  width: 0,
+  height: 0,
+}, action) => {
+  switch (action.type) {
+    case 'SET_IMAGE_HEIGHT':
+      return {
+        ...state,
+        height: action.height,
+      };
+
+    case 'SET_IMAGE_WIDTH':
+      return {
+        width: action.width,
+        ...state,
+      };
+
+    case 'SET_IMAGE_FILE': {
+      const file = action.file;
+      return {
+        file,
+        name: file.name,
+        ...state,
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
 const images = (state = [], action) => {
   switch (action.type) {
+    case 'ADD_IMAGE':
+      return [action.image, ...state];
+
     case 'SET_IMAGES':
       return action.images;
 
@@ -88,6 +124,7 @@ const searchQuery = (state = '', action) => {
 
 export default combineReducers({
   canUpload,
+  image,
   images,
   previewImageUrl,
   previewLabels,
