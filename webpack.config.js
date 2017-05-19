@@ -6,7 +6,7 @@ var BUILD_DIR = path.resolve(__dirname, 'public');
 
 var config = {
   devtool: 'cheap-module-eval-source-map',
-  entry: APP_DIR + '/index.jsx',
+  entry: APP_DIR + '/index',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -16,7 +16,7 @@ var config = {
       {
         test: /\.(js|jsx)$/,
         include: APP_DIR,
-        use: [
+        loaders: [
           'babel-loader',
           'eslint-loader'
         ]
@@ -24,7 +24,7 @@ var config = {
       {
         test: /\.css$/,
         include: APP_DIR,
-        use: [
+        loaders: [
           'style-loader',
           'css-loader'
         ]
@@ -35,11 +35,15 @@ var config = {
         query: {
           name: 'static/media/[name].[hash:8].[ext]'
         }
+      },
+      {
+        test: /\.json$/,
+	loader: 'json-loader'
       }
     ]
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx']
+    extensions: ["", '.js', '.json', '.jsx']
   }
 };
 
